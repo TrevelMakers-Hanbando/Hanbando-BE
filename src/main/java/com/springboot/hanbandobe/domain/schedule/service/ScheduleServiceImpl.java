@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.domain.schedule.service;
 
+import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
 import com.springboot.hanbandobe.domain.schedule.repository.ScheduleRepository;
@@ -7,7 +8,10 @@ import com.springboot.hanbandobe.domain.user.repository.UserRepository;
 import com.springboot.hanbandobe.entity.Schedule;
 import com.springboot.hanbandobe.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +42,18 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .endedAt(schedule.getEndedAt())
                 .message("일정 생성 성공")
                 .build();
+    }
+
+    @Override
+    public List<ScheduleListResponseDto> getSchedule(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return scheduleRepository.findAll(pageRequest)
+                .map(Schedule -> new ScheduleListResponseDto(
+                        Schedule.getScheduleNo(),
+                        Schedule.getUser().getUserNo(),
+                        Schedule.getTitle(),
+                        Schedule.getCreatedAt()
+                )).getContent();
     }
 }

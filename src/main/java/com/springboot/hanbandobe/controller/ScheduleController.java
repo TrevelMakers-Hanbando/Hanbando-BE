@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.controller;
 
+import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
 import com.springboot.hanbandobe.domain.schedule.service.ScheduleService;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedule")
@@ -38,8 +41,12 @@ public class ScheduleController {
 
     @GetMapping("/list")
     @Operation(summary = "모든 스케줄 목록 조회", description = "유저의 모든 스케줄 목록을 조회합니다.")
-    public ResponseEntity<?> getSchedule() {
-        return null;
+    public ResponseEntity<List<ScheduleListResponseDto>> getSchedule(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        List<ScheduleListResponseDto> dto = scheduleService.getSchedule(page, size);
+        return ResponseEntity.ok(dto);
     }
 
     // 특정 스케줄 상세 조회(get)
