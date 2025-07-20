@@ -74,4 +74,26 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .updatedAt(schedule.getUpdatedAt())
                 .build();
     }
+
+    @Override
+    public ScheduleResponseDto PutScheduleDetail(Long ScheduleNo, ScheduleRequestDto scheduleRequestDto) {
+        Schedule schedule = scheduleRepository.findById(ScheduleNo)
+                .orElseThrow(() -> new RuntimeException("해당 스케줄이 존재하지 않습니다."));
+
+        schedule.setTitle(scheduleRequestDto.getTitle());
+        schedule.setContent(scheduleRequestDto.getContent());
+        schedule.setStartedAt(scheduleRequestDto.getStartedAt());
+        schedule.setEndedAt(scheduleRequestDto.getEndedAt());
+
+        scheduleRepository.save(schedule);
+
+        return ScheduleResponseDto.builder()
+                .scheduleNo(schedule.getScheduleNo())
+                .title(schedule.getTitle())
+                .content(schedule.getContent())
+                .startedAt(schedule.getStartedAt())
+                .endedAt(schedule.getEndedAt())
+                .message("일정 수정 성공")
+                .build();
+    }
 }

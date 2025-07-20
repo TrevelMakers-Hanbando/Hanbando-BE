@@ -4,8 +4,7 @@ import com.springboot.hanbandobe.domain.schedule.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.validation.Valid;
 
 
 import java.util.List;
@@ -16,4 +15,6 @@ public interface ScheduleService {
     List<ScheduleListResponseDto> getSchedule(int page, int size);
 
     ScheduleDetailResponseDto getScheduleDetail(Long scheduleNo);
+
+    ScheduleResponseDto PutScheduleDetail(Long ScheduleNo, @Valid ScheduleRequestDto scheduleRequestDto);
 }

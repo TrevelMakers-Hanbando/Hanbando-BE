@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,19 +60,23 @@ public class ScheduleController {
         return ResponseEntity.ok(dto);
     }
 
-    @PutMapping("/")
+    @PutMapping("/{scheduleNo}")
     @Operation(summary = "특정 스케줄 정보 전체 수정", description = "특정 스케줄 정보를 전체 수정합니다")
-    public ResponseEntity<?> PutScheduleDetail() {
-        return null;
+    public ResponseEntity<ScheduleResponseDto> PutScheduleDetail(
+            @RequestParam Long ScheduleNo,
+            @RequestBody @Valid ScheduleRequestDto scheduleRequestDto
+    ) {
+        ScheduleResponseDto dto = scheduleService.PutScheduleDetail(ScheduleNo, scheduleRequestDto);
+        return ResponseEntity.ok(dto);
     }
 
-    @PatchMapping("/")
+    @PatchMapping("/{scheduleNo}")
     @Operation(summary = "특정 스케줄 정보 일부 수정", description = "특정 스케줄 정보를 일부 수정합니다")
     public ResponseEntity<?> PatchScheduleDetail() {
         return null;
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/{scheduleNo}")
     @Operation(summary = "특정 스케줄 정보 삭제", description = "특정 스케줄 정보를 삭제합니다.")
     public ResponseEntity<?> DeleteSchedule() {
         return null;
