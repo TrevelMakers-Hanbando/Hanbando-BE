@@ -73,8 +73,12 @@ public class ScheduleController {
 
     @PatchMapping("/{scheduleNo}")
     @Operation(summary = "특정 스케줄 정보 일부 수정", description = "특정 스케줄 정보를 일부 수정합니다")
-    public ResponseEntity<?> PatchScheduleDetail() {
-        return null;
+    public ResponseEntity<ScheduleResponseDto> PatchScheduleDetail(
+            @PathVariable Long scheduleNo,
+            @RequestBody @Valid ScheduleRequestDto scheduleRequestDto
+    ) {
+        ScheduleResponseDto dto = scheduleService.PatchScheduleDetail(scheduleNo, scheduleRequestDto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{scheduleNo}")
