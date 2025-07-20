@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.controller;
 
+import com.springboot.hanbandobe.domain.schedule.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
@@ -28,7 +29,7 @@ import java.util.List;
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("/")
+    @PostMapping("/{userNo}")
     @Operation(summary = "여행 일정 생성", description = "유저가 여행 일정을 생성합니다.")
     public ResponseEntity<ScheduleResponseDto> PostSchedule(
             @RequestParam Long userNo,
@@ -49,28 +50,27 @@ public class ScheduleController {
         return ResponseEntity.ok(dto);
     }
 
-    // 특정 스케줄 상세 조회(get)
-    @GetMapping("/")
+    @GetMapping("/{scheduleNo}")
     @Operation(summary = "특정 스케줄 상세 조회", description = "특정 스케줄를 조회합니다.")
-    public ResponseEntity<?> getScheduleDetail() {
-        return null;
+    public ResponseEntity<ScheduleDetailResponseDto> getScheduleDetail(
+            @RequestParam Long scheduleNo
+    ) {
+        ScheduleDetailResponseDto dto = scheduleService.getScheduleDetail(scheduleNo);
+        return ResponseEntity.ok(dto);
     }
 
-    // 특정 스케줄 정보 전체 수정(put)
     @PutMapping("/")
     @Operation(summary = "특정 스케줄 정보 전체 수정", description = "특정 스케줄 정보를 전체 수정합니다")
     public ResponseEntity<?> PutScheduleDetail() {
         return null;
     }
 
-    // 특정 스케줄 정보 일부 수정(patch)
     @PatchMapping("/")
     @Operation(summary = "특정 스케줄 정보 일부 수정", description = "특정 스케줄 정보를 일부 수정합니다")
     public ResponseEntity<?> PatchScheduleDetail() {
         return null;
     }
 
-    // 특정 스케줄 정보 삭제(delete)
     @DeleteMapping("/")
     @Operation(summary = "특정 스케줄 정보 삭제", description = "특정 스케줄 정보를 삭제합니다.")
     public ResponseEntity<?> DeleteSchedule() {

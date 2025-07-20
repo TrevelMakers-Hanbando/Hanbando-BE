@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.domain.schedule.service;
 
+import com.springboot.hanbandobe.domain.schedule.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
@@ -35,7 +36,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.save(schedule);
 
         return ScheduleResponseDto.builder()
-                .ScheduleNo(schedule.getScheduleNo())
+                .scheduleNo(schedule.getScheduleNo())
                 .title(schedule.getTitle())
                 .content(schedule.getContent())
                 .startedAt(schedule.getStartedAt())
@@ -55,5 +56,22 @@ public class ScheduleServiceImpl implements ScheduleService {
                         Schedule.getTitle(),
                         Schedule.getCreatedAt()
                 )).getContent();
+    }
+
+    @Override
+    public ScheduleDetailResponseDto getScheduleDetail(Long scheduleNo) {
+        Schedule schedule = scheduleRepository.findById(scheduleNo)
+                .orElseThrow(() -> new RuntimeException("등록되지 않은 스케줄입니다."));
+
+        return ScheduleDetailResponseDto.builder()
+                .ScheduleNo(schedule.getScheduleNo())
+                .userNo(schedule.getUser().getUserNo())
+                .title(schedule.getTitle())
+                .content(schedule.getContent())
+                .startedAt(schedule.getStartedAt())
+                .endedAt(schedule.getEndedAt())
+                .createdAt(schedule.getCreatedAt())
+                .updatedAt(schedule.getUpdatedAt())
+                .build();
     }
 }
