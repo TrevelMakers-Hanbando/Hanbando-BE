@@ -17,4 +17,6 @@ public interface ScheduleService {
     ScheduleDetailResponseDto getScheduleDetail(Long scheduleNo);
 
     ScheduleResponseDto PutScheduleDetail(Long ScheduleNo, @Valid ScheduleRequestDto scheduleRequestDto);
+
+    void DeleteSchedule(Long scheduleNo);
 }

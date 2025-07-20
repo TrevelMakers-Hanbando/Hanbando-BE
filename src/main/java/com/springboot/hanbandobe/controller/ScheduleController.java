@@ -5,6 +5,7 @@ import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
 import com.springboot.hanbandobe.domain.schedule.service.ScheduleService;
+import com.springboot.hanbandobe.entity.Schedule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -78,7 +79,10 @@ public class ScheduleController {
 
     @DeleteMapping("/{scheduleNo}")
     @Operation(summary = "특정 스케줄 정보 삭제", description = "특정 스케줄 정보를 삭제합니다.")
-    public ResponseEntity<?> DeleteSchedule() {
-        return null;
+    public ResponseEntity<String> DeleteSchedule(
+            @PathVariable Long scheduleNo
+    ) {
+        scheduleService.DeleteSchedule(scheduleNo);
+        return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
 }

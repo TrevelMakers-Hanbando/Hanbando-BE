@@ -96,4 +96,11 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .message("일정 수정 성공")
                 .build();
     }
+
+    @Override
+    public void DeleteSchedule(Long scheduleNo) {
+        Schedule schedule = scheduleRepository.findById(scheduleNo)
+                .orElseThrow(() -> new RuntimeException("해당 스케줄은 존재하지 않습니다."));
+        scheduleRepository.delete(schedule);
+    }
 }
