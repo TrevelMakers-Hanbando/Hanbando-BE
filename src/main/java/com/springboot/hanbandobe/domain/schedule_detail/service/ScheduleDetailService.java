@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ScheduleDetailService {
     List<ScheduleDetailResponseDto> GetScheduleDetails(Long ScheduleNo);
+
+    ScheduleDetailResponseDto PutScheduleDetailSelect(Long ScheduleDetailNo);
 }

@@ -28,12 +28,32 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
                         .scheduleDetailNo(sd.getScheduleDetailNo())
                         .travelCategoryName(sd.getTravelCategory().getName())  // travel_category.name
                         .isSelected(sd.getIsSelected())
-                        .title(sd.getContent())
+                        .title(sd.getTitle())
                         .content(sd.getContent())
                         .startedAt(sd.getStartedAt())
                         .endedAt(sd.getEndedAt())
                         .createdAt(sd.getCreatedAt())
                         .build())
                 .toList();
+    }
+
+    @Override
+    public ScheduleDetailResponseDto PutScheduleDetailSelect(Long ScheduleDetailNo) {
+        Schedule_detail scheduleDetail = scheduleDetailRepository.findById(ScheduleDetailNo)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 일정입니다."));
+
+        scheduleDetail.setIsSelected(Boolean.TRUE);
+        scheduleDetailRepository.save(scheduleDetail);
+
+        return ScheduleDetailResponseDto.builder()
+                .scheduleDetailNo(scheduleDetail.getScheduleDetailNo())
+                .travelCategoryName(scheduleDetail.getTravelCategory().getName())
+                .isSelected(scheduleDetail.getIsSelected())
+                .title(scheduleDetail.getContent())
+                .content(scheduleDetail.getContent())
+                .startedAt(scheduleDetail.getStartedAt())
+                .endedAt(scheduleDetail.getEndedAt())
+                .createdAt(scheduleDetail.getStartedAt())
+                .build();
     }
 }

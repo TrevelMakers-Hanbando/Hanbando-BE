@@ -29,6 +29,12 @@ public class ScheduleDetailController {
         return null;
     }
 
+    @GetMapping
+    @Operation(summary = "스케줄 상세보기", description = "스케줄의 상세한 정보를 조회합니다.")
+    public ResponseEntity<?> GetScheduleDetails() {
+        return null;
+    }
+
     @GetMapping("/list")
     @Operation(summary = "추천 리스트 조회", description = "추천 스케줄 리스트를 조회합니다.")
     public ResponseEntity<List<ScheduleDetailResponseDto>> GetScheduleDetails(
@@ -37,38 +43,40 @@ public class ScheduleDetailController {
         return ResponseEntity.ok(scheduleDetailService.GetScheduleDetails(ScheduleNo));
     }
 
-    @PutMapping("/{schedule-detailNo}/select")
+    @PutMapping("/select")
     @Operation(summary = "스케줄 선택", description = "해당 스케줄을 선택합니다.")
-    public ResponseEntity<?> PutScheduleDetailSelect() {
-        return null;
+    public ScheduleDetailResponseDto PutScheduleDetailSelect(
+            @RequestParam Long ScheduleDetailNo
+    ) {
+        return scheduleDetailService.PutScheduleDetailSelect(ScheduleDetailNo);
     }
 
-    @PutMapping("/{schedule-detailNo}/cancel")
+    @PutMapping("/cancel")
     @Operation(summary = "스케줄 선택 취소", description = "해당 스케줄 선택을 취소합니다.")
     public ResponseEntity<?> PutScheduleDetailCancel() {
         return null;
     }
 
-    @PutMapping("/{schedule-detailNo}/")
+    @PutMapping
     @Operation(summary = "스케줄 시간대 수정", description = "해당 스케줄의 시간대를 변경합니다.")
     public ResponseEntity<?> PutScheduleDetail() {
         // 만약 시간이 겹치는 시간대가 있으면 Exception
         return null;
     }
 
-    @GetMapping("/{schedule-detailNo}/detail")
+    @GetMapping("/detail")
     @Operation(summary = "전체 스케줄표를 조회", description = "해당 여행의 전체 일정을 조회합니다.")
     public ResponseEntity<?> GetScheduleDetailDetail() {
         return null;
     }
 
-    @GetMapping("/{schedule-detailNo}/day-detail")
+    @GetMapping("day-detail")
     @Operation(summary = "일별 스케줄표 조회", description = "선택한 날짜의 전체 스케줄 표를 조회합니다.")
     public ResponseEntity<?> GetScheduleDetailDayDetail() {
         return null;
     }
 
-    @DeleteMapping("/{schedule-detailNo}")
+    @DeleteMapping
     @Operation(summary = "해당 스케줄 관심없음", description = "해당 스케줄을 삭제합니다.")
     public ResponseEntity<?> DeleteScheduleDetail() {
         return null;
