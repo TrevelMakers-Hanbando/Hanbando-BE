@@ -53,8 +53,10 @@ public class ScheduleDetailController {
 
     @PutMapping("/cancel")
     @Operation(summary = "스케줄 선택 취소", description = "해당 스케줄 선택을 취소합니다.")
-    public ResponseEntity<?> PutScheduleDetailCancel() {
-        return null;
+    public ScheduleDetailResponseDto PutScheduleDetailCancel(
+            @RequestParam Long ScheduleDetailNo
+    ) {
+        return scheduleDetailService.PutScheduleDetailCancel(ScheduleDetailNo);
     }
 
     @PutMapping
