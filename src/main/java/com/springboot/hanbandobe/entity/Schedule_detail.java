@@ -17,7 +17,7 @@ import static java.lang.Boolean.FALSE;
 
 @Entity
 @Table(name = "schedule_detail")
-public class Schedule_detail {
+public class Schedule_detail extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_detail_no", nullable = false)
@@ -37,9 +37,9 @@ public class Schedule_detail {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "started_at", nullable = false, updatable = false)
+    @Column(name = "started_at", nullable = false)
     private LocalDateTime startedAt;
 
-    @Column(name = "ended_at", nullable = false, updatable = false)
+    @Column(name = "ended_at", nullable = false)
     private LocalDateTime endedAt;
 }
