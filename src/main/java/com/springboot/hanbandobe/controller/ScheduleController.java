@@ -31,7 +31,7 @@ import java.util.List;
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
-    @PostMapping("/{userNo}")
+    @PostMapping
     @Operation(summary = "여행 일정 생성", description = "유저가 여행 일정을 생성합니다.")
     public ResponseEntity<ScheduleResponseDto> PostSchedule(
             @RequestParam Long userNo,
@@ -52,7 +52,7 @@ public class ScheduleController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/{scheduleNo}")
+    @GetMapping
     @Operation(summary = "특정 스케줄 상세 조회", description = "특정 스케줄를 조회합니다.")
     public ResponseEntity<ScheduleDetailResponseDto> getScheduleDetail(
             @RequestParam Long scheduleNo
@@ -61,7 +61,7 @@ public class ScheduleController {
         return ResponseEntity.ok(dto);
     }
 
-    @PutMapping("/{scheduleNo}")
+    @PutMapping
     @Operation(summary = "특정 스케줄 정보 전체 수정", description = "특정 스케줄 정보를 전체 수정합니다")
     public ResponseEntity<ScheduleResponseDto> PutScheduleDetail(
             @RequestParam Long ScheduleNo,
@@ -71,20 +71,20 @@ public class ScheduleController {
         return ResponseEntity.ok(dto);
     }
 
-    @PatchMapping("/{scheduleNo}")
+    @PatchMapping
     @Operation(summary = "특정 스케줄 정보 일부 수정", description = "특정 스케줄 정보를 일부 수정합니다")
     public ResponseEntity<ScheduleResponseDto> PatchScheduleDetail(
-            @PathVariable Long scheduleNo,
+            @RequestParam Long scheduleNo,
             @RequestBody @Valid ScheduleRequestDto scheduleRequestDto
     ) {
         ScheduleResponseDto dto = scheduleService.PatchScheduleDetail(scheduleNo, scheduleRequestDto);
         return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/{scheduleNo}")
+    @DeleteMapping
     @Operation(summary = "특정 스케줄 정보 삭제", description = "특정 스케줄 정보를 삭제합니다.")
     public ResponseEntity<String> DeleteSchedule(
-            @PathVariable Long scheduleNo
+            @RequestParam Long scheduleNo
     ) {
         scheduleService.DeleteSchedule(scheduleNo);
         return ResponseEntity.ok("삭제가 완료되었습니다.");
