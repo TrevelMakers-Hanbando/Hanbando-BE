@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.controller;
 
+import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule_detail.service.ScheduleDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedule-details")
@@ -28,8 +31,10 @@ public class ScheduleDetailController {
 
     @GetMapping("/list")
     @Operation(summary = "추천 리스트 조회", description = "추천 스케줄 리스트를 조회합니다.")
-    public ResponseEntity<?> GetScheduleDetails() {
-        return null;
+    public ResponseEntity<List<ScheduleDetailResponseDto>> GetScheduleDetails(
+            @RequestParam Long ScheduleNo
+    ) {
+        return ResponseEntity.ok(scheduleDetailService.GetScheduleDetails(ScheduleNo));
     }
 
     @PutMapping("/{schedule-detailNo}/select")
