@@ -16,7 +16,7 @@ public class User_partyServiceImpl implements User_partyService {
 
     private final User_partyRepository user_partyRepository;
     private final UserService userService;
-    private final PartyService partyService;
+//    private final PartyService partyService;
 
     @Override
     public void createOneUser_party(Long userNo, Long partyNo) {
