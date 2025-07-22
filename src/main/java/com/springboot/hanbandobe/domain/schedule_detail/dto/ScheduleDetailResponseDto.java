@@ -26,4 +26,7 @@ public class ScheduleDetailResponseDto {
     private LocalDateTime endedAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime updatedAt;
+
 }

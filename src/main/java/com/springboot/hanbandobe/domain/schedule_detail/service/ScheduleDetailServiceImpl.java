@@ -1,12 +1,15 @@
 package com.springboot.hanbandobe.domain.schedule_detail.service;
 
 import com.springboot.hanbandobe.domain.schedule.repository.ScheduleRepository;
+import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule_detail.repository.ScheduleDetailRepository;
+import com.springboot.hanbandobe.entity.Schedule;
 import com.springboot.hanbandobe.entity.Schedule_detail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,17 +49,19 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
 
 
         scheduleDetail.setIsSelected(Boolean.TRUE);
+        scheduleDetail.setUpdatedAt(LocalDateTime.now());
         scheduleDetailRepository.save(scheduleDetail);
 
         return ScheduleDetailResponseDto.builder()
                 .scheduleDetailNo(scheduleDetail.getScheduleDetailNo())
                 .travelCategoryName(scheduleDetail.getTravelCategory().getName())
                 .isSelected(scheduleDetail.getIsSelected())
-                .title(scheduleDetail.getContent())
+                .title(scheduleDetail.getTitle())
                 .content(scheduleDetail.getContent())
                 .startedAt(scheduleDetail.getStartedAt())
                 .endedAt(scheduleDetail.getEndedAt())
-                .createdAt(scheduleDetail.getStartedAt())
+                .createdAt(scheduleDetail.getCreatedAt())
+                .updatedAt(scheduleDetail.getUpdatedAt())
                 .build();
     }
 
@@ -68,17 +73,65 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
         if (Boolean.FALSE.equals(scheduleDetail.getIsSelected())) throw new RuntimeException("선택된 적이 없는 일정입니다.");
 
         scheduleDetail.setIsSelected(Boolean.FALSE);
+        scheduleDetail.setUpdatedAt(LocalDateTime.now());
         scheduleDetailRepository.save(scheduleDetail);
 
         return ScheduleDetailResponseDto.builder()
                 .scheduleDetailNo(scheduleDetail.getScheduleDetailNo())
                 .travelCategoryName(scheduleDetail.getTravelCategory().getName())
                 .isSelected(scheduleDetail.getIsSelected())
-                .title(scheduleDetail.getContent())
+                .title(scheduleDetail.getTitle())
                 .content(scheduleDetail.getContent())
                 .startedAt(scheduleDetail.getStartedAt())
                 .endedAt(scheduleDetail.getEndedAt())
-                .createdAt(scheduleDetail.getStartedAt())
+                .createdAt(scheduleDetail.getCreatedAt())
+                .updatedAt(scheduleDetail.getUpdatedAt())
+                .build();
+    }
+
+    @Override
+    public ScheduleDetailResponseDto PutScheduleDetail(Long scheduleDetailNo, ScheduleDetailPutTimeDto dto) {
+        Schedule_detail scheduleDetail = scheduleDetailRepository.findById(scheduleDetailNo)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 일정입니다."));
+
+        LocalDateTime newStart = dto.getStartedAt();
+        LocalDateTime newEnd = dto.getEndedAt();
+
+        Schedule schedule = scheduleDetail.getSchedule();
+        if (newStart.isBefore(schedule.getStartedAt()) || newEnd.isAfter(schedule.getEndedAt())) {
+            throw new RuntimeException("일정 시간은 전체 스케줄 범위를 벗어날 수 없습니다.");
+        }
+
+        List<Schedule_detail> selectedDetails = scheduleDetailRepository.findBySchedule_ScheduleNoAndIsSelectedTrue(schedule.getScheduleNo());
+
+        for (Schedule_detail other : selectedDetails) {
+            if (!other.getScheduleDetailNo().equals(scheduleDetailNo)) {
+                LocalDateTime otherStart = other.getStartedAt();
+                LocalDateTime otherEnd = other.getEndedAt();
+
+                boolean overlaps = !(newEnd.isBefore(otherStart) || newStart.isAfter(otherEnd));
+                if (overlaps) {
+                    throw new RuntimeException("겹치는 선택된 일정이 이미 존재합니다.");
+                }
+            }
+        }
+
+        scheduleDetail.setStartedAt(newStart);
+        scheduleDetail.setEndedAt(newEnd);
+        scheduleDetail.setUpdatedAt(LocalDateTime.now());
+
+        scheduleDetailRepository.save(scheduleDetail);
+
+        return ScheduleDetailResponseDto.builder()
+                .scheduleDetailNo(scheduleDetail.getScheduleDetailNo())
+                .travelCategoryName(scheduleDetail.getTravelCategory().getName())
+                .isSelected(scheduleDetail.getIsSelected())
+                .title(scheduleDetail.getTitle())
+                .content(scheduleDetail.getContent())
+                .startedAt(scheduleDetail.getStartedAt())
+                .endedAt(scheduleDetail.getEndedAt())
+                .createdAt(scheduleDetail.getCreatedAt())
+                .updatedAt(scheduleDetail.getUpdatedAt())
                 .build();
     }
 }

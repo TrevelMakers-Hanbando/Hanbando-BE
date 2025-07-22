@@ -11,4 +11,6 @@ import java.util.List;
 public interface ScheduleDetailRepository extends JpaRepository<Schedule_detail, Long> {
     @Query("SELECT sd FROM Schedule_detail sd JOIN FETCH sd.travelCategory WHERE sd.schedule.scheduleNo = :scheduleNo")
     List<Schedule_detail> findAllWithCategoryByScheduleNo(@Param("scheduleNo") Long scheduleNo);
+
+    List<Schedule_detail> findBySchedule_ScheduleNoAndIsSelectedTrue(Long scheduleNo);
 }

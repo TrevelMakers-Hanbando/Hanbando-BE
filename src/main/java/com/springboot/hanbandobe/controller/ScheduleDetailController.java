@@ -1,15 +1,18 @@
 package com.springboot.hanbandobe.controller;
 
+import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule_detail.service.ScheduleDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +29,7 @@ public class ScheduleDetailController {
     @PostMapping
     @Operation(summary = "스케줄 생성", description = "새 스케줄을 추가합니다.")
     public ResponseEntity<?> PostScheduleDetails() {
+        // prefer 정보를 flask에 넘겨서 받아와서 scheduleDetail에 저장
         return null;
     }
 
@@ -61,9 +65,12 @@ public class ScheduleDetailController {
 
     @PutMapping
     @Operation(summary = "스케줄 시간대 수정", description = "해당 스케줄의 시간대를 변경합니다.")
-    public ResponseEntity<?> PutScheduleDetail() {
+    public ScheduleDetailResponseDto PutScheduleDetail(
+            @RequestParam Long ScheduleDetailNo,
+            @RequestBody @Valid ScheduleDetailPutTimeDto scheduleDetailPutTimeDto
+            ) {
         // 만약 시간이 겹치는 시간대가 있으면 Exception
-        return null;
+        return scheduleDetailService.PutScheduleDetail(ScheduleDetailNo, scheduleDetailPutTimeDto);
     }
 
     @GetMapping("/detail")
