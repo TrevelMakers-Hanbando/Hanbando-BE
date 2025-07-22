@@ -35,8 +35,10 @@ public class ScheduleDetailController {
 
     @GetMapping
     @Operation(summary = "스케줄 상세보기", description = "스케줄의 상세한 정보를 조회합니다.")
-    public ResponseEntity<?> GetScheduleDetails() {
-        return null;
+    public ResponseEntity<ScheduleDetailResponseDto> GetScheduleDetail(
+            @RequestParam Long ScheduleDetailNo
+    ) {
+        return ResponseEntity.ok(scheduleDetailService.GetScheduleDetail(ScheduleDetailNo));
     }
 
     @GetMapping("/list")
@@ -69,25 +71,27 @@ public class ScheduleDetailController {
             @RequestParam Long ScheduleDetailNo,
             @RequestBody @Valid ScheduleDetailPutTimeDto scheduleDetailPutTimeDto
             ) {
-        // 만약 시간이 겹치는 시간대가 있으면 Exception
         return scheduleDetailService.PutScheduleDetail(ScheduleDetailNo, scheduleDetailPutTimeDto);
     }
 
     @GetMapping("/detail")
     @Operation(summary = "전체 스케줄표를 조회", description = "해당 여행의 전체 일정을 조회합니다.")
     public ResponseEntity<?> GetScheduleDetailDetail() {
+        //is_selected가 true인것들을 시간순서대로 list형태로 response하기
         return null;
     }
 
     @GetMapping("day-detail")
     @Operation(summary = "일별 스케줄표 조회", description = "선택한 날짜의 전체 스케줄 표를 조회합니다.")
     public ResponseEntity<?> GetScheduleDetailDayDetail() {
+        // 시작일을 기준으로 첫째날인지 둘째날인지 입력해서 해당 일자의 일정 list 형태로 response하기
         return null;
     }
 
     @DeleteMapping
     @Operation(summary = "해당 스케줄 관심없음", description = "해당 스케줄을 삭제합니다.")
     public ResponseEntity<?> DeleteScheduleDetail() {
+        // 삭제
         return null;
     }
 

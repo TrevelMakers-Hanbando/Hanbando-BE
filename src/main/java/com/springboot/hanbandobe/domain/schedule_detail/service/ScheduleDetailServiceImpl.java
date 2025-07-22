@@ -134,4 +134,12 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
                 .updatedAt(scheduleDetail.getUpdatedAt())
                 .build();
     }
+
+    @Override
+    public ScheduleDetailResponseDto GetScheduleDetail(Long ScheduleDetailNo) {
+        Schedule_detail scheduleDetail = scheduleDetailRepository.findById(ScheduleDetailNo)
+                .orElseThrow(() -> new RuntimeException("해당 스케줄은 존재하지 않습니다."));
+
+        return ScheduleDetailResponseDto.from(scheduleDetail);
+    }
 }
