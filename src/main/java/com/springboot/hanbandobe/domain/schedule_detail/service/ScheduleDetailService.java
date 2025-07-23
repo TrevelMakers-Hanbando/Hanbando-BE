@@ -19,4 +19,6 @@ public interface ScheduleDetailService {
     ScheduleDetailResponseDto GetScheduleDetail(Long ScheduleDetailNo);
 
     List<ScheduleDetailResponseDto> GetScheduleDetailDetail(Long ScheduleNo);
+
+    String DeleteScheduleDetail(Long ScheduleDetailNo);
 }

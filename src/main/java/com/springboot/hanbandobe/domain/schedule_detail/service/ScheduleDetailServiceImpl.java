@@ -165,4 +165,14 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
                         .build())
                 .toList();
     }
+
+    @Override
+    public String DeleteScheduleDetail(Long ScheduleDetailNo) {
+        Schedule_detail sd = scheduleDetailRepository.findById(ScheduleDetailNo)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 스케줄입니다."));
+
+        scheduleDetailRepository.delete(sd);
+
+        return "해당 스케줄을 삭제했습니다.";
+    }
 }

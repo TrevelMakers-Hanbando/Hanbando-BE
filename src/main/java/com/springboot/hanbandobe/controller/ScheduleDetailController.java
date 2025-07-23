@@ -91,11 +91,10 @@ public class ScheduleDetailController {
 
     @DeleteMapping
     @Operation(summary = "해당 스케줄 관심없음", description = "해당 스케줄을 삭제합니다.")
-    public ResponseEntity<?> DeleteScheduleDetail() {
-        // 삭제
-        return null;
+    public ResponseEntity<String> DeleteScheduleDetail(
+            @RequestParam Long ScheduleDetailNo
+    ) {
+        return ResponseEntity.ok(scheduleDetailService.DeleteScheduleDetail(ScheduleDetailNo));
     }
-
-
 }
 
