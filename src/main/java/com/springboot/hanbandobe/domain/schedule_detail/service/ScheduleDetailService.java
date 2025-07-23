@@ -17,4 +17,6 @@ public interface ScheduleDetailService {
     ScheduleDetailResponseDto PutScheduleDetail(Long ScheduleDetailNo, @Valid ScheduleDetailPutTimeDto scheduleDetailPutTimeDto);
 
     ScheduleDetailResponseDto GetScheduleDetail(Long ScheduleDetailNo);
+
+    List<ScheduleDetailResponseDto> GetScheduleDetailDetail(Long ScheduleNo);
 }

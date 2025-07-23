@@ -76,9 +76,10 @@ public class ScheduleDetailController {
 
     @GetMapping("/detail")
     @Operation(summary = "전체 스케줄표를 조회", description = "해당 여행의 전체 일정을 조회합니다.")
-    public ResponseEntity<?> GetScheduleDetailDetail() {
-        //is_selected가 true인것들을 시간순서대로 list형태로 response하기
-        return null;
+    public List<ScheduleDetailResponseDto> GetScheduleDetailDetail(
+            @RequestParam Long ScheduleNo
+    ) {
+        return scheduleDetailService.GetScheduleDetailDetail(ScheduleNo);
     }
 
     @GetMapping("day-detail")

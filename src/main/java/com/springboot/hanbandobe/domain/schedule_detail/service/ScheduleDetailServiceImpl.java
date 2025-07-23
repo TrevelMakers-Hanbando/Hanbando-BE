@@ -29,7 +29,7 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
         return scheduleDetails.stream()
                 .map(sd -> ScheduleDetailResponseDto.builder()
                         .scheduleDetailNo(sd.getScheduleDetailNo())
-                        .travelCategoryName(sd.getTravelCategory().getName())  // travel_category.name
+                        .travelCategoryName(sd.getTravelCategory().getName())
                         .isSelected(sd.getIsSelected())
                         .title(sd.getTitle())
                         .content(sd.getContent())
@@ -141,5 +141,28 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
                 .orElseThrow(() -> new RuntimeException("해당 스케줄은 존재하지 않습니다."));
 
         return ScheduleDetailResponseDto.from(scheduleDetail);
+    }
+
+    @Override
+    public List<ScheduleDetailResponseDto> GetScheduleDetailDetail(Long ScheduleNo) {
+        if (!scheduleRepository.existsById(ScheduleNo)) {
+            throw new RuntimeException("해당 스케줄이 존재하지 않습니다.");
+        }
+
+        List<Schedule_detail> selectedDetails = scheduleDetailRepository
+                .findSelectedWithCategoryByScheduleNo(ScheduleNo);
+
+        return selectedDetails.stream()
+                .map(sd -> ScheduleDetailResponseDto.builder()
+                        .scheduleDetailNo(sd.getScheduleDetailNo())
+                        .travelCategoryName(sd.getTravelCategory().getName())
+                        .isSelected(sd.getIsSelected())
+                        .title(sd.getTitle())
+                        .content(sd.getContent())
+                        .startedAt(sd.getStartedAt())
+                        .endedAt(sd.getEndedAt())
+                        .createdAt(sd.getCreatedAt())
+                        .build())
+                .toList();
     }
 }
