@@ -29,7 +29,8 @@ public class ScheduleDetailController {
     @PostMapping
     @Operation(summary = "스케줄 생성", description = "새 스케줄을 추가합니다.")
     public ResponseEntity<?> PostScheduleDetails() {
-        // prefer 정보를 flask에 넘겨서 받아와서 scheduleDetail에 저장
+        // prefer 정보를 flask에 넘겨서 받아와서 scheduleDetail에
+        // 저장
         return null;
     }
 
@@ -82,12 +83,13 @@ public class ScheduleDetailController {
         return scheduleDetailService.GetScheduleDetailDetail(ScheduleNo);
     }
 
-    @GetMapping("day-detail")
-    @Operation(summary = "일별 스케줄표 조회", description = "선택한 날짜의 전체 스케줄 표를 조회합니다.")
-    public ResponseEntity<?> GetScheduleDetailDayDetail() {
-        // 시작일을 기준으로 첫째날인지 둘째날인지 입력해서 해당 일자의 일정 list 형태로 response하기
-        return null;
-    }
+    // 이건 프론트에서 해도 될것 같아서 일단 보류
+//    @GetMapping("day-detail")
+//    @Operation(summary = "일별 스케줄표 조회", description = "선택한 날짜의 전체 스케줄 표를 조회합니다.")
+//    public ResponseEntity<?> GetScheduleDetailDayDetail() {
+//        // 시작일을 기준으로 첫째날인지 둘째날인지 입력해서 해당 일자의 일정 list 형태로 response하기
+//        return null;
+//    }
 
     @DeleteMapping
     @Operation(summary = "해당 스케줄 관심없음", description = "해당 스케줄을 삭제합니다.")
