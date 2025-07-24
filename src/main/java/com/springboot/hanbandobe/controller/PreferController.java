@@ -58,7 +58,7 @@ public class PreferController {
             @RequestParam Long userNo,
             @RequestBody @Valid PreferRequestDto preferRequestDto
     ) {
-        return ResponseEntity.ok(preferService.updatePrefer(userNo));
+        return ResponseEntity.ok(preferService.updatePrefer(userNo, preferRequestDto));
     }
 
     @PatchMapping
@@ -67,6 +67,6 @@ public class PreferController {
             @RequestParam Long userNo,
             @RequestBody @Valid PreferRequestDto preferRequestDto
     ) {
-        return ResponseEntity.ok(preferService.patchPrefer(userNo));
+        return ResponseEntity.ok(preferService.patchPrefer(userNo, preferRequestDto));
     }
 }
