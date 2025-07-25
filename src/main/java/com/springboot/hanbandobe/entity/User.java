@@ -28,7 +28,6 @@ import static java.lang.Boolean.FALSE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-@Getter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
