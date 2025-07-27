@@ -1,0 +1,189 @@
+package com.springboot.hanbandobe.controller;
+
+import com.springboot.hanbandobe.domain.board.dto.BoardRequestDto;
+import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
+import com.springboot.hanbandobe.domain.board.service.BoardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/board")
+@Tag(name = "Board APIs", description = "게시판 관련 API 목록")
+public class BoardController {
+    private final BoardService boardService;
+
+    @GetMapping()
+    @Operation(summary = "게시판 목록 조회", description = "전체 게시판의 목록을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
+    public ResponseEntity<List<BoardResponseDto>> getBoards (
+            @ParameterObject
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC, sort = "boardNo") Pageable pageable
+            , @RequestParam(required = true) Long boardCategoryNo
+            , @RequestParam(required = false, defaultValue = "") String boardTitle) {
+
+        Page<BoardResponseDto> boardResponseDtos = boardService.getBoards(pageable, boardCategoryNo, boardTitle);
+
+        if (!boardResponseDtos.isEmpty()) {
+            return ResponseEntity.ok(boardResponseDtos.getContent());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/{boardNo}")
+    @Operation(summary = "게시판 단건 조회", description = "단건 게시판의 정보를 조회한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
+    public ResponseEntity<BoardResponseDto> getBoard (@PathVariable Long boardNo) {
+        BoardResponseDto boardResponseDto = boardService.getBoard(boardNo);
+
+        return ResponseEntity.ok(boardResponseDto);
+    }
+
+    @PostMapping()
+    @Operation(summary = "게시판 추가", description = "게시판을 추가한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
+    public ResponseEntity<BoardResponseDto> createBoard (
+            @RequestBody BoardRequestDto boardRequestDto) {
+
+        boardService.saveBoard(boardRequestDto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{boardNo}")
+    @Operation(summary = "게시판 수정", description = "게시판을 수정한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
+    public ResponseEntity<BoardResponseDto> updateBoard (
+            @PathVariable Long boardNo, @RequestBody BoardRequestDto boardRequestDto) {
+
+        boardService.updateBoard(boardNo, boardRequestDto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{boardNo}")
+    @Operation(summary = "게시판 삭제", description = "게시판을 삭제한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
+    public ResponseEntity<BoardResponseDto> deleteBoard (@PathVariable Long boardNo) {
+
+        boardService.deleteBoard(boardNo);
+
+        return ResponseEntity.noContent().build();
+    }
+}
