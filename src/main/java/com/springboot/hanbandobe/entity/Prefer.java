@@ -11,7 +11,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,10 +42,9 @@ public class Prefer extends BaseEntity {
     @Column(name = "purpose", nullable = false, columnDefinition = "TEXT")
     private String purpose;
 
-
-    @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
     @Embeddable
     public static class PreferId implements Serializable {
         @Column(name = "user_no")

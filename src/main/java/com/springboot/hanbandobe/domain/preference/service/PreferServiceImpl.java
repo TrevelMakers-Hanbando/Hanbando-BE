@@ -20,25 +20,31 @@ public class PreferServiceImpl implements PreferService {
         User user = userRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("유저 정보를 찾을 수 없습니다."));
 
+        Prefer.PreferId preferId = new Prefer.PreferId(userNo);
         Prefer prefer = Prefer.builder()
+                .id(preferId)
                 .user(user)
                 .where(preferRequestDto.getWhere())
                 .content(preferRequestDto.getContent())
                 .purpose(preferRequestDto.getPurpose())
                 .build();
 
-        preferRepository.save(prefer);
+        System.out.println("prefer.getId().getUserNo() = " + prefer.getId().getUserNo());
+        System.out.println("prefer.getUser().getUserNo() = " + prefer.getUser().getUserNo());
 
+        // 3) 저장
+        Prefer savedPrefer = preferRepository.save(prefer);
 
         return new PreferResponseDto(
                 userNo,
-                prefer.getWhere(),
-                prefer.getPurpose(),
-                prefer.getContent(),
-                prefer.getCreatedAt(),
-                prefer.getUpdatedAt()
+                savedPrefer.getWhere(),
+                savedPrefer.getPurpose(),
+                savedPrefer.getContent(),
+                savedPrefer.getCreatedAt(),
+                savedPrefer.getUpdatedAt()
         );
     }
+
 
     @Override
     public PreferResponseDto getPrefer(Long userNo) {
