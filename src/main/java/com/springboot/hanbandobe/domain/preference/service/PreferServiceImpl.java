@@ -96,13 +96,10 @@ public class PreferServiceImpl implements PreferService {
         Prefer preferSaved = preferRepository.save(prefer);
 
         return PreferResponseDto.builder()
-                .userNo(preferSaved.getUser().getUserNo())
                 .content(preferSaved.getContent())
                 .purpose(preferSaved.getPurpose())
                 .where(preferSaved.getWhere())
-                .createdAt(preferSaved.getCreatedAt())
                 .updatedAt(preferSaved.getUpdatedAt())
                 .build();
     }
 }
-

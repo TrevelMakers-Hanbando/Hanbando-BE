@@ -5,11 +5,10 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,15 +20,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Builder
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "prefer")
 public class Prefer extends BaseEntity {
     @EmbeddedId
-    @Id
     private PreferId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,12 +44,10 @@ public class Prefer extends BaseEntity {
     @Column(name = "purpose", nullable = false, columnDefinition = "TEXT")
     private String purpose;
 
-
-    @Embeddable
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
-    @Setter
+    @Embeddable
     public static class PreferId implements Serializable {
         @Column(name = "user_no")
         private Long userNo;
