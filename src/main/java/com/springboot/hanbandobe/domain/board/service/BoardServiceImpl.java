@@ -6,6 +6,7 @@ import com.springboot.hanbandobe.domain.board.repository.BoardRepository;
 import com.springboot.hanbandobe.domain.board_category.repository.Board_categoryRepository;
 import com.springboot.hanbandobe.entity.Board;
 import com.springboot.hanbandobe.entity.Board_category;
+import com.springboot.hanbandobe.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class BoardServiceImpl implements BoardService {
     private final Board_categoryRepository board_categoryRepository;
 
     @Override
-    public void saveBoard(BoardRequestDto boardRequestDto) {
+    public void saveBoard(User user, BoardRequestDto boardRequestDto) {
         Board_category boardCategory = board_categoryRepository.findById(boardRequestDto.getBoardCategoryNo())
                 .orElseThrow(() -> new RuntimeException("해당 카테고리를 찾을 수 없습니다."));
 
@@ -32,6 +33,7 @@ public class BoardServiceImpl implements BoardService {
                 .title(boardRequestDto.getTitle())
                 .content(boardRequestDto.getContent())
                 .boardCategory(boardCategory)
+                .user(user)
                 .build();
 
         boardRepository.save(board);
@@ -54,9 +56,13 @@ public class BoardServiceImpl implements BoardService {
 
     @Transactional
     @Override
-    public void updateBoard(Long boardNo, BoardRequestDto boardRequestDto) {
+    public void updateBoard(User user, Long boardNo, BoardRequestDto boardRequestDto) {
         Board board =  boardRepository.findById(boardNo)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
+        if (!(user.getUserNo() == board.getUser().getUserNo())) {
+            new RuntimeException("작성자가 아닙니다.");
+        }
 
         Board_category boardCategory = board_categoryRepository.findById(boardRequestDto.getBoardCategoryNo())
                 .orElseThrow(() -> new RuntimeException("해당 카테고리를 찾을 수 없습니다."));
@@ -64,15 +70,17 @@ public class BoardServiceImpl implements BoardService {
         board.setBoardCategory(boardCategory);
         board.setTitle(boardRequestDto.getTitle());
         board.setContent(boardRequestDto.getContent());
-
-        boardRepository.save(board);
     }
 
     @Transactional
     @Override
-    public void deleteBoard(Long boardNo) {
+    public void deleteBoard(User user, Long boardNo) {
         Board board =  boardRepository.findById(boardNo)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
+        if (!(user.getUserNo() == board.getUser().getUserNo())) {
+            throw new RuntimeException("작성자가 아닙니다.");
+        }
 
         board.setIsDeleted(true);
         board.setDeletedAt(LocalDateTime.now());
