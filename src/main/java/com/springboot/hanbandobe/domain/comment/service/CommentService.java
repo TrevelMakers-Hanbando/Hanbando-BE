@@ -7,7 +7,7 @@ import com.springboot.hanbandobe.entity.User;
 import java.util.List;
 
 public interface CommentService {
-    void saveComment(User user, CommentRequestDto commentRequestDto);
+    void saveComment(User user, Long boardNo, CommentRequestDto commentRequestDto);
 
     CommentResponseDto getComment(Long commentNo);
 
@@ -15,7 +15,7 @@ public interface CommentService {
 
     List<CommentResponseDto> getCommentsByBoardNo(Long boardNo);
 
-    void updateComment(User user, Long commentNo, CommentRequestDto commentRequestDto);
+    void updateComment(User user, Long boardNo, Long commentNo, CommentRequestDto commentRequestDto);
 
-    void deleteComment(User user, Long commentNo);
+    void deleteComment(User user, Long boardNo, Long commentNo);
 }

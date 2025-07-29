@@ -21,8 +21,8 @@ public class CommentServiceImpl implements CommentService {
     private final BoardRepository boardRepository;
 
     @Override
-    public void saveComment(User user, CommentRequestDto commentRequestDto) {
-        Board board = boardRepository.findById(commentRequestDto.getBoardNo())
+    public void saveComment(User user, Long boardNo, CommentRequestDto commentRequestDto) {
+        Board board = boardRepository.findById(boardNo)
                 .orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
 
         Comment comment = Comment.builder()
@@ -56,9 +56,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void updateComment(User user, Long commentNo, CommentRequestDto commentRequestDto) {
+    public void updateComment(User user, Long boardNo, Long commentNo, CommentRequestDto commentRequestDto) {
+        Board board = boardRepository.findById(boardNo)
+                .orElseThrow(() -> new RuntimeException("게시글을 찾을 수 없습니다."));
+
         Comment comment = commentRepository.findById(commentNo)
-                        .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
 
         if (!(user.getUserNo() == comment.getUser().getUserNo())) {
             throw new RuntimeException("댓글 작성자가 아닙니다.");
@@ -68,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(User user, Long commentNo) {
+    public void deleteComment(User user, Long boardNo, Long commentNo) {
         Comment comment = commentRepository.findById(commentNo)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
 

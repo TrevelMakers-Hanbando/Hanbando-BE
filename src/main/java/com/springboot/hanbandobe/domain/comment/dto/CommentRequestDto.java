@@ -10,10 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequestDto {
-    private Long commentNo;
-
-    private Long boardNo;
-
     private String content;
 
     private Long parentCommentNo;

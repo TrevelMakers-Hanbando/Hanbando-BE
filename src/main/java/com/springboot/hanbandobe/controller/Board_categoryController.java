@@ -5,7 +5,6 @@ import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
 import com.springboot.hanbandobe.domain.board_category.dto.Board_categoryRequestDto;
 import com.springboot.hanbandobe.domain.board_category.dto.Board_categoryResponseDto;
 import com.springboot.hanbandobe.domain.board_category.service.Board_categoryService;
-import com.springboot.hanbandobe.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,7 +31,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/board-category")
-@Tag(name = "Board_category APIs", description = "게시판 카테고리 관련 API")
+@Tag(name = "Board_category", description = "게시판 카테고리 관련 API")
 public class Board_categoryController {
     private final Board_categoryService boardCategoryService;
 
