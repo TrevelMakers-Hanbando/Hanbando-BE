@@ -42,7 +42,6 @@ import java.util.List;
 @Tag(name = "Board", description = "게시판 관련 API")
 public class BoardController {
     private final BoardService boardService;
-    private final CommentService commentService;
 
     @GetMapping()
     @Operation(summary = "게시판 목록 조회", description = "전체 게시판의 목록을 조회한다.")
@@ -195,107 +194,6 @@ public class BoardController {
             )
     })
     public ResponseEntity<BoardResponseDto> deleteBoard (
-            @AuthenticationPrincipal PrincipalDetails principalDetails
-            , @PathVariable Long boardNo) {
-
-        User user = principalDetails.getUser();
-
-        boardService.deleteBoard(user, boardNo);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("{boardNo}/comment")
-    @Operation(summary = "게시판 댓글 생성", description = "게시판 댓글을 생성한다.")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "NOT FOUND",
-                    content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "INTERNAL SERVER ERROR",
-                    content = @Content(mediaType = "application/json")
-            )
-    })
-    public ResponseEntity<BoardResponseDto> createComment(
-            @AuthenticationPrincipal PrincipalDetails principalDetails
-            , @PathVariable Long boardNo
-            , @RequestBody CommentRequestDto commentRequestDto){
-        User user = principalDetails.getUser();
-
-        commentService.saveComment(user, boardNo, commentRequestDto);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{boardNo}/comment/{commentNo}")
-    @Operation(summary = "게시판 댓글 수정", description = "게시판 댓글을 수정한다.")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "NOT FOUND",
-                    content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "INTERNAL SERVER ERROR",
-                    content = @Content(mediaType = "application/json")
-            )
-    })
-    public ResponseEntity<BoardResponseDto> updateBoardComment (
-            @AuthenticationPrincipal PrincipalDetails principalDetails
-            , @PathVariable Long boardNo
-            , @PathVariable Long commentNo
-            , @RequestBody CommentRequestDto commentRequestDto) {
-
-        User user = principalDetails.getUser();
-
-        commentService.updateComment(user, boardNo, commentNo, commentRequestDto);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("/{boardNo}/comment/{commentNo}")
-    @Operation(summary = "게시판 댓글 삭제", description = "게시판 댓글을 삭제한다.")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "NOT FOUND",
-                    content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "INTERNAL SERVER ERROR",
-                    content = @Content(mediaType = "application/json")
-            )
-    })
-    public ResponseEntity<BoardResponseDto> deleteBoardComment (
             @AuthenticationPrincipal PrincipalDetails principalDetails
             , @PathVariable Long boardNo) {
 

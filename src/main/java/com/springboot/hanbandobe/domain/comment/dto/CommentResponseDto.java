@@ -19,6 +19,12 @@ public class CommentResponseDto {
 
     private Long boardNo;
 
+    private Long userNo;
+
+    private String email;
+
+    private String name;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

@@ -8,11 +8,10 @@ import com.springboot.hanbandobe.entity.Board;
 import com.springboot.hanbandobe.entity.Comment;
 import com.springboot.hanbandobe.entity.User;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -44,12 +43,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseDto> getCommentsByBoardNo(Long boardNo) {
+    public Page<CommentResponseDto> getCommentsByBoardNo(Pageable pageable, Long boardNo) {
         Board board = boardRepository.findById(boardNo)
                 .orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
 
-        List<CommentResponseDto> commentResponseDtos = commentRepository.findCommentsByBoard_BoardNo(board.getBoardNo())
-                .stream().map(CommentResponseDto::new).collect(Collectors.toList());
+        Page<CommentResponseDto> commentResponseDtos = commentRepository.findCommentsByBoard_BoardNo(pageable, boardNo)
+                .map(CommentResponseDto::new);
 
         return commentResponseDtos;
     }

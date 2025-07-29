@@ -49,7 +49,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Page<BoardResponseDto> getBoards(Pageable pageable, Long boardCategoryNo, String boardTitle) {
-        Page<BoardResponseDto> boardResponseDtos = boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContains(pageable, boardCategoryNo, boardTitle).map(BoardResponseDto::new);
+        Page<BoardResponseDto> boardResponseDtos = boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContains(pageable, boardCategoryNo, boardTitle)
+                .map(BoardResponseDto::new);
 
         return boardResponseDtos;
     }
