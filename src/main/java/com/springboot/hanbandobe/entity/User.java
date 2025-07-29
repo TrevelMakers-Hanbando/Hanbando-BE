@@ -21,6 +21,7 @@ import static java.lang.Boolean.FALSE;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
+@Builder
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
@@ -49,4 +50,5 @@ public class User extends BaseEntity {
 
     @Column(name = "deleted_content", length = 100, nullable = true)
     private String deletedContent = null;
+
 }

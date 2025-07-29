@@ -49,7 +49,8 @@ dependencies {
     implementation "org.springframework.session:spring-session-data-redis:3.4.2"
     implementation "org.springframework.boot:spring-boot-starter-cache:3.4.4"
 
-
+    // 메일 인증
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 
