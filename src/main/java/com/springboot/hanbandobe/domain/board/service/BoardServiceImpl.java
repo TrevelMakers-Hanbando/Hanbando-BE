@@ -9,6 +9,7 @@ import com.springboot.hanbandobe.entity.Board_category;
 import com.springboot.hanbandobe.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class BoardServiceImpl implements BoardService {
@@ -61,8 +63,8 @@ public class BoardServiceImpl implements BoardService {
         Board board =  boardRepository.findById(boardNo)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
 
-        if (!(user.getUserNo() == board.getUser().getUserNo())) {
-            new RuntimeException("작성자가 아닙니다.");
+        if (!user.getUserNo().equals(board.getUser().getUserNo())) {
+            throw new RuntimeException("게시물 작성자가 아닙니다.");
         }
 
         Board_category boardCategory = board_categoryRepository.findById(boardRequestDto.getBoardCategoryNo())
@@ -79,8 +81,8 @@ public class BoardServiceImpl implements BoardService {
         Board board =  boardRepository.findById(boardNo)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
 
-        if (!(user.getUserNo() == board.getUser().getUserNo())) {
-            throw new RuntimeException("작성자가 아닙니다.");
+        if (!user.getUserNo().equals(board.getUser().getUserNo())) {
+            throw new RuntimeException("게시글 작성자가 아닙니다.");
         }
 
         board.setIsDeleted(true);
