@@ -49,9 +49,6 @@ public class Board extends BaseEntity {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "deleted_at", nullable = true)
-    private LocalDateTime deletedAt = null;
-
     @Builder.Default
     @Column(name = "is_deleted", nullable = false)
     @ColumnDefault("'FALSE'")

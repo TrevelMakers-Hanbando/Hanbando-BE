@@ -84,9 +84,5 @@ public class BoardServiceImpl implements BoardService {
         }
 
         board.setIsDeleted(true);
-        board.setDeletedAt(LocalDateTime.now());
-        board.setUpdatedAt(board.getUpdatedAt());
-
-        boardRepository.save(board);
     }
 }
