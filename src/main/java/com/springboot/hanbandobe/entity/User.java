@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.entity;
 
+import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,10 +19,10 @@ import java.time.LocalDateTime;
 import static java.lang.Boolean.FALSE;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
@@ -29,7 +30,7 @@ public class User extends BaseEntity {
     @Column(name = "user_no", nullable = false)
     private Long userNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_no", nullable = false)
     private Role role;
 
