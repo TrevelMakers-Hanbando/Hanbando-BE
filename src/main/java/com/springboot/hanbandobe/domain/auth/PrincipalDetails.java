@@ -38,6 +38,10 @@ public class PrincipalDetails implements UserDetails {
         return user.getEmail();
     }
 
+    public User getUser() {
+        return user;
+    }
+
     /*
         추가로 확장할 기능(비밀번호 주기 변경 등등)
      */

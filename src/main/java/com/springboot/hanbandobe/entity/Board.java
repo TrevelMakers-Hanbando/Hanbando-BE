@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -51,6 +52,8 @@ public class Board extends BaseEntity {
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt = null;
 
+    @Builder.Default
     @Column(name = "is_deleted", nullable = false)
+    @ColumnDefault("'FALSE'")
     private Boolean isDeleted = FALSE;
 }
