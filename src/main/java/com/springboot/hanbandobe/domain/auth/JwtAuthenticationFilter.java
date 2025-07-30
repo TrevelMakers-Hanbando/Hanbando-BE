@@ -21,7 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final List<String> EXCLUDED_PATHS = Arrays.asList("/swagger-ui/**", "/v3/api-docs/**", "/api/user/login", "/api/user/join");
+    private static final List<String> EXCLUDED_PATHS = Arrays.asList("/swagger-ui/**", "/v3/api-docs/**", "/api/user/login", "/api/user/join", "/api/email/send", "/api/email/verify");
     private static final AntPathMatcher pathMacher = new AntPathMatcher();
 
     // 클라이언트가 새로운 HTTP 요청을 보낼 때마다 실행되는 과정

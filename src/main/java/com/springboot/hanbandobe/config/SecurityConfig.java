@@ -68,8 +68,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/api/user/login").permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/api/user/refresh").permitAll()
+                                .requestMatchers("/api/user/login", "/api/user/join", "/api/email/send", "/api/email/verify").permitAll()
                                 .anyRequest().authenticated()); // 위 경로 외에 다른 요청은 인증필요
 
         return http.build();

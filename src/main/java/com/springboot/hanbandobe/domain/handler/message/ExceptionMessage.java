@@ -10,7 +10,9 @@ public enum ExceptionMessage {
 
     // 인증 관련
     INVALID_REFRESH_TOKEN("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED),
-    USER_NOT_FOUND("사용자를 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
+    USER_NOT_FOUND("사용자를 찾을 수 없습니다.",HttpStatus.NOT_FOUND),
+    EMAIL_ALREADY_EXIST("이미 존재하는 이메일입니다.", HttpStatus.CONFLICT),
+    ROLE_NOT_FOUND("권한을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
 
     private final String message;
     private final HttpStatus status;
