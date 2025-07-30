@@ -43,9 +43,6 @@ public class User extends BaseEntity {
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "deleted_at", nullable = true)
-    private LocalDateTime deletedAt = null;
-
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = FALSE;
 
