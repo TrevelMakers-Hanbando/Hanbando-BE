@@ -1,9 +1,14 @@
 package com.springboot.hanbandobe.controller;
 
+import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule_detail.service.ScheduleDetailService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +41,26 @@ public class ScheduleDetailController {
 
     @GetMapping
     @Operation(summary = "스케줄 상세보기", description = "스케줄의 상세한 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public ResponseEntity<ScheduleDetailResponseDto> GetScheduleDetail(
             @RequestParam Long ScheduleDetailNo
     ) {
@@ -44,6 +69,26 @@ public class ScheduleDetailController {
 
     @GetMapping("/list")
     @Operation(summary = "추천 리스트 조회", description = "추천 스케줄 리스트를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public ResponseEntity<List<ScheduleDetailResponseDto>> GetScheduleDetails(
             @RequestParam Long ScheduleNo
     ) {
@@ -52,6 +97,26 @@ public class ScheduleDetailController {
 
     @PutMapping("/select")
     @Operation(summary = "스케줄 선택", description = "해당 스케줄을 선택합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public ScheduleDetailResponseDto PutScheduleDetailSelect(
             @RequestParam Long ScheduleDetailNo
     ) {
@@ -60,6 +125,26 @@ public class ScheduleDetailController {
 
     @PutMapping("/cancel")
     @Operation(summary = "스케줄 선택 취소", description = "해당 스케줄 선택을 취소합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public ScheduleDetailResponseDto PutScheduleDetailCancel(
             @RequestParam Long ScheduleDetailNo
     ) {
@@ -68,6 +153,26 @@ public class ScheduleDetailController {
 
     @PutMapping
     @Operation(summary = "스케줄 시간대 수정", description = "해당 스케줄의 시간대를 변경합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public ScheduleDetailResponseDto PutScheduleDetail(
             @RequestParam Long ScheduleDetailNo,
             @RequestBody @Valid ScheduleDetailPutTimeDto scheduleDetailPutTimeDto
@@ -77,6 +182,26 @@ public class ScheduleDetailController {
 
     @GetMapping("/detail")
     @Operation(summary = "전체 스케줄표를 조회", description = "해당 여행의 전체 일정을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public List<ScheduleDetailResponseDto> GetScheduleDetailDetail(
             @RequestParam Long ScheduleNo
     ) {
@@ -93,6 +218,26 @@ public class ScheduleDetailController {
 
     @DeleteMapping
     @Operation(summary = "해당 스케줄 관심없음", description = "해당 스케줄을 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
     public ResponseEntity<String> DeleteScheduleDetail(
             @RequestParam Long ScheduleDetailNo
     ) {
