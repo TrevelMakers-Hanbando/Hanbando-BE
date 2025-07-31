@@ -49,13 +49,13 @@ public class BoardServiceImpl implements BoardService {
     public Page<BoardResponseDto> getBoards(Pageable pageable, User user, Long boardCategoryNo, String boardTitle) {
         Page<BoardResponseDto> boardResponseDtos;
 
-        if (user.getRole().getName().equals("ADMIN")){
+        if (user == null || !(user.getRole().getName().equals("ADMIN"))) {
             boardResponseDtos =
-                    boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContains(pageable, boardCategoryNo, boardTitle)
+                    boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContainsAndIsDeletedFalse(pageable, boardCategoryNo, boardTitle)
                             .map(BoardResponseDto::new);
         } else {
             boardResponseDtos =
-                    boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContainsAndIsDeletedFalse(pageable, boardCategoryNo, boardTitle)
+                    boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContains(pageable, boardCategoryNo, boardTitle)
                             .map(BoardResponseDto::new);
         }
 

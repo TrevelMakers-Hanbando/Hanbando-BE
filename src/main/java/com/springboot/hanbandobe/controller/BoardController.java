@@ -66,7 +66,7 @@ public class BoardController {
             , @RequestParam(required = true) Long boardCategoryNo
             , @RequestParam(required = false, defaultValue = "") String boardTitle) {
 
-        User user = principalDetails.getUser();
+        User user = (principalDetails != null) ? principalDetails.getUser() : null;
 
         Page<BoardResponseDto> boardResponseDtos = boardService.getBoards(pageable, user, boardCategoryNo, boardTitle);
 
