@@ -49,5 +49,4 @@ public class User extends BaseEntity {
     @Column(name = "deleted_content", length = 100, nullable = true)
     private String deletedContent = null;
     // 테스트
-
 }
