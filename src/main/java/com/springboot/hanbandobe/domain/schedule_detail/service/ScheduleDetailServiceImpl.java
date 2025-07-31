@@ -3,14 +3,17 @@ package com.springboot.hanbandobe.domain.schedule_detail.service;
 import com.springboot.hanbandobe.domain.schedule.repository.ScheduleRepository;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
+import com.springboot.hanbandobe.domain.schedule_detail.dto.testDto;
 import com.springboot.hanbandobe.domain.schedule_detail.repository.ScheduleDetailRepository;
 import com.springboot.hanbandobe.entity.Schedule;
 import com.springboot.hanbandobe.entity.Schedule_detail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -174,5 +177,21 @@ public class ScheduleDetailServiceImpl implements ScheduleDetailService {
         scheduleDetailRepository.delete(sd);
 
         return "해당 스케줄을 삭제했습니다.";
+    }
+
+    private static final String PYTHON_POST = "http://127.0.0.1:5002";
+
+    @Override
+    public testDto PostScheduleDetails(Long userNo) {
+        WebClient client = WebClient.create(PYTHON_POST);
+
+        Map<String, Object> body = Map.of("userNo", userNo);
+
+        return client.post()
+                .uri("/test-connection")
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(testDto.class)
+                .block();
     }
 }

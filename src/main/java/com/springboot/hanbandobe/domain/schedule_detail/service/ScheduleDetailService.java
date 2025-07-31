@@ -2,6 +2,7 @@ package com.springboot.hanbandobe.domain.schedule_detail.service;
 
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
+import com.springboot.hanbandobe.domain.schedule_detail.dto.testDto;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,4 +22,6 @@ public interface ScheduleDetailService {
     List<ScheduleDetailResponseDto> GetScheduleDetailDetail(Long ScheduleNo);
 
     String DeleteScheduleDetail(Long ScheduleDetailNo);
+
+    testDto PostScheduleDetails(Long userNo);
 }
