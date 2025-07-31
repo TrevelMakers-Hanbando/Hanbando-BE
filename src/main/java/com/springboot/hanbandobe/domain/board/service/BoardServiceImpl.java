@@ -8,15 +8,11 @@ import com.springboot.hanbandobe.entity.Board;
 import com.springboot.hanbandobe.entity.Board_category;
 import com.springboot.hanbandobe.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -50,9 +46,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<BoardResponseDto> getBoards(Pageable pageable, Long boardCategoryNo, String boardTitle) {
-        Page<BoardResponseDto> boardResponseDtos = boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContains(pageable, boardCategoryNo, boardTitle)
-                .map(BoardResponseDto::new);
+    public Page<BoardResponseDto> getBoards(Pageable pageable, User user, Long boardCategoryNo, String boardTitle) {
+        Page<BoardResponseDto> boardResponseDtos;
+
+        if (user.getRole().getName().equals("ADMIN")){
+            boardResponseDtos =
+                    boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContains(pageable, boardCategoryNo, boardTitle)
+                            .map(BoardResponseDto::new);
+        } else {
+            boardResponseDtos =
+                    boardRepository.findBoardsByBoardCategory_BoardCategoryNoAndTitleContainsAndIsDeletedFalse(pageable, boardCategoryNo, boardTitle)
+                            .map(BoardResponseDto::new);
+        }
 
         return boardResponseDtos;
     }
