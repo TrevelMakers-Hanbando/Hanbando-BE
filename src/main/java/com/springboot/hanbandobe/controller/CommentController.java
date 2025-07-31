@@ -1,10 +1,9 @@
 package com.springboot.hanbandobe.controller;
 
 import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
-import com.springboot.hanbandobe.domain.board.dto.BoardRequestDto;
 import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
-import com.springboot.hanbandobe.domain.board.service.BoardService;
 import com.springboot.hanbandobe.domain.comment.dto.CommentRequestDto;
+import com.springboot.hanbandobe.domain.comment.dto.CommentResponseDto;
 import com.springboot.hanbandobe.domain.comment.service.CommentService;
 import com.springboot.hanbandobe.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,18 +36,21 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/board")
-@Tag(name = "Board", description = "게시판 관련 API")
-public class BoardController {
-    private final BoardService boardService;
+@RequestMapping("/api")
+@Tag(name = "Comment", description = "댓글 관련 API")
+public class CommentController {
+    private final CommentService commentService;
 
-    @GetMapping()
-    @Operation(summary = "게시판 목록 조회", description = "전체 게시판의 목록을 조회한다.")
+    @GetMapping("/board/{boardNo}/comment")
+    @Operation(summary = "게시판 댓글 조회", description = "게시판 댓글을 조회한다.")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "OK",
-                    content = @Content(mediaType = "application/json")
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -62,23 +63,22 @@ public class BoardController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<List<BoardResponseDto>> getBoards (
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByBoardNo(
             @ParameterObject
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC, sort = "boardNo") Pageable pageable
-            , @RequestParam(required = true) Long boardCategoryNo
-            , @RequestParam(required = false, defaultValue = "") String boardTitle) {
+            , @RequestParam(required = true) Long boardNo) {
 
-        Page<BoardResponseDto> boardResponseDtos = boardService.getBoards(pageable, boardCategoryNo, boardTitle);
+        Page<CommentResponseDto> commentResponseDtos =  commentService.getCommentsByBoardNo(pageable, boardNo);
 
-        if (!boardResponseDtos.isEmpty()) {
-            return ResponseEntity.ok(boardResponseDtos.getContent());
+        if (!commentResponseDtos.isEmpty()) {
+            return ResponseEntity.ok(commentResponseDtos.getContent());
         } else {
             return ResponseEntity.noContent().build();
         }
     }
 
-    @GetMapping("/{boardNo}")
-    @Operation(summary = "게시판 단건 조회", description = "단건 게시판의 정보를 조회한다.")
+    @PostMapping("/board/{boardNo}/comment")
+    @Operation(summary = "게시판 댓글 생성", description = "게시판 댓글을 생성한다.")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -99,47 +99,19 @@ public class BoardController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<BoardResponseDto> getBoard (@PathVariable Long boardNo) {
-        BoardResponseDto boardResponseDto = boardService.getBoard(boardNo);
-
-        return ResponseEntity.ok(boardResponseDto);
-    }
-
-    @PostMapping()
-    @Operation(summary = "게시판 추가", description = "게시판을 추가한다.")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "OK",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "NOT FOUND",
-                    content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "INTERNAL SERVER ERROR",
-                    content = @Content(mediaType = "application/json")
-            )
-    })
-    public ResponseEntity<BoardResponseDto> createBoard (
+    public ResponseEntity<BoardResponseDto> createComment(
             @AuthenticationPrincipal PrincipalDetails principalDetails
-            , @RequestBody BoardRequestDto boardRequestDto) {
-
+            , @PathVariable Long boardNo
+            , @RequestBody CommentRequestDto commentRequestDto){
         User user = principalDetails.getUser();
 
-        boardService.saveBoard(user, boardRequestDto);
+        commentService.saveComment(user, boardNo, commentRequestDto);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{boardNo}")
-    @Operation(summary = "게시판 수정", description = "게시판을 수정한다.")
+    @PutMapping("/board/{boardNo}/comment/{commentNo}")
+    @Operation(summary = "게시판 댓글 수정", description = "게시판 댓글을 수정한다.")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -160,19 +132,21 @@ public class BoardController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<BoardResponseDto> updateBoard (
+    public ResponseEntity<BoardResponseDto> updateBoardComment (
             @AuthenticationPrincipal PrincipalDetails principalDetails
-            , @PathVariable Long boardNo, @RequestBody BoardRequestDto boardRequestDto) {
+            , @PathVariable Long boardNo
+            , @PathVariable Long commentNo
+            , @RequestBody CommentRequestDto commentRequestDto) {
 
         User user = principalDetails.getUser();
 
-        boardService.updateBoard(user, boardNo, boardRequestDto);
+        commentService.updateComment(user, boardNo, commentNo, commentRequestDto);
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{boardNo}")
-    @Operation(summary = "게시판 삭제", description = "게시판을 삭제한다.")
+    @DeleteMapping("/board/{boardNo}/comment/{commentNo}")
+    @Operation(summary = "게시판 댓글 삭제", description = "게시판 댓글을 삭제한다.")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -193,13 +167,14 @@ public class BoardController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<BoardResponseDto> deleteBoard (
+    public ResponseEntity<BoardResponseDto> deleteBoardComment (
             @AuthenticationPrincipal PrincipalDetails principalDetails
-            , @PathVariable Long boardNo) {
+            , @PathVariable Long boardNo
+            , @PathVariable Long commentNo) {
 
         User user = principalDetails.getUser();
 
-        boardService.deleteBoard(user, boardNo);
+        commentService.deleteComment(user, boardNo, commentNo);
 
         return ResponseEntity.noContent().build();
     }

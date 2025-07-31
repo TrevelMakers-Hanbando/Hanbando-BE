@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.entity;
 
+import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,11 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 import java.time.LocalDateTime;
@@ -23,9 +20,8 @@ import static java.lang.Boolean.FALSE;
 
 @Entity
 @Getter
-@Setter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "user")
 public class User extends BaseEntity {
@@ -34,7 +30,7 @@ public class User extends BaseEntity {
     @Column(name = "user_no", nullable = false)
     private Long userNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_no", nullable = false)
     private Role role;
 
@@ -47,12 +43,10 @@ public class User extends BaseEntity {
     @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(name = "deleted_at", nullable = true)
-    private LocalDateTime deletedAt = null;
-
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = FALSE;
 
     @Column(name = "deleted_content", length = 100, nullable = true)
     private String deletedContent = null;
+    // 테스트
 }
