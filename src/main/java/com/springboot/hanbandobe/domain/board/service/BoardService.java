@@ -13,7 +13,7 @@ public interface BoardService {
 
     BoardResponseDto getBoard(Long boardNo);
 
-    Page<BoardResponseDto> getBoards(Pageable pageable, Long boardCategoryNo, String title);
+    Page<BoardResponseDto> getBoards(Pageable pageable, User user, Long boardCategoryNo, String title);
 
     void deleteBoard(User user, Long boardNo);
 

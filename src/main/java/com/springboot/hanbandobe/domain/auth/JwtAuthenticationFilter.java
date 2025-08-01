@@ -21,8 +21,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final List<String> EXCLUDED_PATHS = Arrays.asList("/swagger-ui/**", "/v3/api-docs/**", "/api/user/login", "/api/user/join", "/api/email/send", "/api/email/verify");
-    private static final AntPathMatcher pathMacher = new AntPathMatcher();
+//    private static final List<String> EXCLUDED_PATHS = Arrays.asList(
+//            "/swagger-ui/**"
+//            , "/v3/api-docs/**"
+//            , "/api/user/login"
+//            , "/api/user/join"
+//            , "/api/email/send"
+//            , "/api/email/verify"
+//            , "/api/board/**"
+//    );
+//    private static final AntPathMatcher pathMacher = new AntPathMatcher();
 
     // 클라이언트가 새로운 HTTP 요청을 보낼 때마다 실행되는 과정
     @Override
@@ -31,10 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request.getHeader("Authorization"));
 
         // Swagger UI 경로는 인증 필터를 통과시킴
-        if (isExcludedPath(request.getRequestURI())) {
-            filterChain.doFilter(request, response);  // JWT 인증을 거치지 않고 바로 필터 통과
-            return;
-        }
+//        if (token == null && isExcludedPath(request.getRequestURI())) {
+//            filterChain.doFilter(request, response);  // JWT 인증을 거치지 않고 바로 필터 통과
+//            return;
+//        }
 
         if (token != null && jwtTokenProvider.validateToken(token)
                 && jwtTokenProvider.hasRoleClaim(token)
@@ -45,20 +53,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Authentication 객체를 SecurityContextHolder에 넣음
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("JWT Token is invalid or blacklisted");
-
-            return;
-        }
+//        else {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setContentType("application/json");
+//            response.setCharacterEncoding("UTF-8");
+//            response.getWriter().write("JWT Token is invalid or blacklisted");
+//
+//            return;
+//        }
         filterChain.doFilter(request, response);
 
     }
 
 
-    private boolean isExcludedPath(String requestURI) {
-        return EXCLUDED_PATHS.stream().anyMatch(pattern -> pathMacher.match(pattern, requestURI));
-    }
+//    private boolean isExcludedPath(String requestURI) {
+//        return EXCLUDED_PATHS.stream().anyMatch(pattern -> pathMacher.match(pattern, requestURI));
+//    }
 }

@@ -4,8 +4,6 @@ import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
 import com.springboot.hanbandobe.domain.board.dto.BoardRequestDto;
 import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
 import com.springboot.hanbandobe.domain.board.service.BoardService;
-import com.springboot.hanbandobe.domain.comment.dto.CommentRequestDto;
-import com.springboot.hanbandobe.domain.comment.service.CommentService;
 import com.springboot.hanbandobe.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,10 +62,13 @@ public class BoardController {
     public ResponseEntity<List<BoardResponseDto>> getBoards (
             @ParameterObject
             @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC, sort = "boardNo") Pageable pageable
+            , @AuthenticationPrincipal PrincipalDetails principalDetails
             , @RequestParam(required = true) Long boardCategoryNo
             , @RequestParam(required = false, defaultValue = "") String boardTitle) {
 
-        Page<BoardResponseDto> boardResponseDtos = boardService.getBoards(pageable, boardCategoryNo, boardTitle);
+        User user = (principalDetails != null) ? principalDetails.getUser() : null;
+
+        Page<BoardResponseDto> boardResponseDtos = boardService.getBoards(pageable, user, boardCategoryNo, boardTitle);
 
         if (!boardResponseDtos.isEmpty()) {
             return ResponseEntity.ok(boardResponseDtos.getContent());
