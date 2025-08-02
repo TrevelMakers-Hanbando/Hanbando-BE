@@ -2,6 +2,7 @@ package com.springboot.hanbandobe.controller;
 
 import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
 import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
+import com.springboot.hanbandobe.domain.schedule_detail.dto.PostPreferDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.testDto;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -56,12 +59,18 @@ public class ScheduleDetailController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<testDto> PostScheduleDetails(
-            @AuthenticationPrincipal PrincipalDetails principalDetails
+    public ResponseEntity<List<PostPreferDto>> PostScheduleDetails(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam String startedAt,
+            @RequestParam String endedAt
     ) {
         Long userNo = principalDetails.getUser().getUserNo();
+        LocalDateTime startDate = LocalDate.parse(startedAt).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(endedAt).atTime(23, 59, 59);
 
-        return ResponseEntity.ok(scheduleDetailService.PostScheduleDetails(userNo));
+        List<PostPreferDto> dto = scheduleDetailService.PostScheduleDetails(userNo, startDate, endDate);
+
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
