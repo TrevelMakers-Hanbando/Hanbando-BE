@@ -13,6 +13,13 @@ env:
 
 jobs:
   build-and-push:
+  - name:
+      Debug: list files
+    run: |
+      echo "현재 경로: $(pwd)"
+      echo "루트 파일 목록:"
+      ls -R .
+
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
