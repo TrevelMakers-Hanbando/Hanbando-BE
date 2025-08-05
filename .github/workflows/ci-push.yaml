@@ -28,15 +28,20 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Cache Maven packages
+      - name: Cache Gradle cache
         uses: actions/cache@v3
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2-
+          path: |
+              ~/.gradle/caches
+              ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle*','**/settings.gradle*') }}
+          restore-keys: |
+              ${{ runner.os }}-gradle-
 
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: Build with Gradle
+        run: |
+            chmod +x gradlew
+            ./gradlew clean build -x test
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
