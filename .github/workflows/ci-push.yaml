@@ -18,8 +18,7 @@ jobs:
     env:
       IMAGE_TAG: ${{ github.sha }}
     steps:
-      - name:
-          Debug: list files
+      - name: Debug list files
         run: |
           echo "현재 경로: $(pwd)"
           echo "루트 파일 목록:"
