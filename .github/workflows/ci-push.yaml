@@ -1,8 +1,9 @@
 name: CI (Build, Push & Update State)
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
+    branches: [ main ]
 
 env:
   # Docker Hub 설정
