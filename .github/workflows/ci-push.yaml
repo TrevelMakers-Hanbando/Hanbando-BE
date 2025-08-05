@@ -1,8 +1,10 @@
 name: CI (Build, Push & Update State)
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
+    branches:
+      - main
 
 env:
   # Docker Hub 설정
@@ -58,8 +60,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   update-image:
     needs: build-and-push
