@@ -24,12 +24,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Debug: list files"
-        run: |
-          echo "현재 경로: $(pwd)"
-          echo "루트 파일 목록:"
-          ls -R .
-
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -81,20 +75,21 @@ jobs:
           path: helm-state
 
       - name: Configure Git
+        working-directory: helm-state
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Update values.yaml image tag
+        working-directory: helm-state/foo/alpha
         run: |
-          cd helm-state/foo/alpha
           yq eval --inplace \
             ".deployment.image = \"${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}\"" \
             values.yaml
 
       - name: Commit, tag & push
+        working-directory: helm-state
         run: |
-          cd helm-state
           git add foo/alpha/values.yaml
           git commit -m "ci: bump foo/alpha image to ${{ env.IMAGE_TAG }}"
           git tag foo/alpha/${{ env.IMAGE_TAG }}
