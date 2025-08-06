@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hanbando-app-{{ .Release.Name }}
+  name: hanbando-app
   labels:
     app: hanbando-app
 spec:
