@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hanbando-app
+  name: hanbando-app-{{ .Release.Name }}
+  labels:
+    app: hanbando-app
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -15,5 +17,16 @@ spec:
       containers:
         - name: hanbando-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.springProfilesActive | quote }}
+
+            {{- if .Values.env }}
+            {{- range .Values.env }}
+            - name: {{ .name | quote }}
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
