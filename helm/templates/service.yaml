@@ -5,6 +5,8 @@ metadata:
 spec:
   selector:
     app: hanbando-app
+  type: LoadBalancer
   ports:
-    - port: 8080
+    - protocol: TCP
+      port: 80
       targetPort: 8080
