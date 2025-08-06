@@ -23,7 +23,7 @@ public class Party extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "party_no", nullable = false)
-    private Long party_no;
+    private Long partyNo;
 
     @Column(name = "name", length = 100, nullable = false)
     private String name;

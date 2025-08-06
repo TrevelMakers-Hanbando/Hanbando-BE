@@ -1,7 +1,5 @@
 package com.springboot.hanbandobe.entity;
 
-import com.springboot.hanbandobe.domain.board.dto.BoardRequestDto;
-import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,8 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.time.LocalDateTime;
 
 import static java.lang.Boolean.FALSE;
 
@@ -50,7 +46,7 @@ public class Board extends BaseEntity {
     private String content;
 
     @Builder.Default
-    @Column(name = "is_deleted", nullable = false)
     @ColumnDefault("'FALSE'")
+    @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = FALSE;
 }
