@@ -65,8 +65,8 @@ public class CommentController {
     })
     public ResponseEntity<List<CommentResponseDto>> getCommentsByBoardNo(
             @ParameterObject
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC, sort = "boardNo") Pageable pageable
-            , @RequestParam(required = true) Long boardNo) {
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "commentNo") Pageable pageable
+            , @PathVariable Long boardNo) {
 
         Page<CommentResponseDto> commentResponseDtos =  commentService.getCommentsByBoardNo(pageable, boardNo);
 

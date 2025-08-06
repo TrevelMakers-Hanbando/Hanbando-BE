@@ -17,13 +17,13 @@ public class CommentResponseDto {
 
     private String content;
 
+    private Long parentCommentNo;
+
     private Long boardNo;
 
     private Long userNo;
 
-    private String email;
-
-    private String name;
+    private String userName;
 
     private LocalDateTime createdAt;
 
@@ -31,6 +31,12 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment) {
         this.commentNo = comment.getCommentNo();
-
+        this.content = comment.getContent();
+        this.parentCommentNo = comment.getParentCommentNo();
+        this.boardNo = comment.getCommentNo();
+        this.userNo = comment.getUser().getUserNo();
+        this.userName = comment.getUser().getName();
+        this.createdAt = comment.getCreatedAt();
+        this.updatedAt = comment.getUpdatedAt();
     }
 }
