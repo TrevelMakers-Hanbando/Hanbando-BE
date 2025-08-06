@@ -53,7 +53,8 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
-          cd ./kube
+          pwd
+#          cd ./kube
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
 
