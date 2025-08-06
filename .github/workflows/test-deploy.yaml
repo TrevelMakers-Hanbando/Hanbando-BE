@@ -69,7 +69,6 @@ jobs:
             --create-namespace \
             --set image.repository=docker.io/${{ secrets.DOCKERHUB_HJ_USERNAME }}/hanbando-app \
             --set image.tag=${{ github.sha }} \
-            --set springProfilesActive=prod \
             --set secrets.DB_HOST=${{ secrets.DB_HOST }} \
             --set secrets.DB_PORT=${{ secrets.DB_PORT }} \
             --set secrets.DB_NAME=${{ secrets.DB_NAME }} \
