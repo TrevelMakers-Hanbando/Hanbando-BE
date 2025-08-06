@@ -5,10 +5,19 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
-service:
-  type: ClusterIP
-  port: 8080
-
-env: []
-
 springProfilesActive: prod
+
+# secret values
+secrets:
+  DB_HOST: ""
+  DB_PORT: ""
+  DB_NAME: ""
+  DB_USERNAME: ""
+  DB_PASSWORD: ""
+  REDIS_HOST: ""
+  REDIS_PORT: ""
+  JWT_SECRET: ""
+  SMTP_HOST: ""
+  SMTP_PORT: ""
+  SMTP_USERNAME: ""
+  SMTP_PASSWORD: ""
