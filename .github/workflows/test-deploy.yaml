@@ -68,7 +68,20 @@ jobs:
             --namespace default \
             --create-namespace \
             --set image.repository=docker.io/${{ secrets.DOCKERHUB_HJ_USERNAME }}/hanbando-app \
-            --set image.tag=${{ github.sha }}
+            --set image.tag=${{ github.sha }} \
+            --set springProfilesActive=prod \
+            --set secrets.DB_HOST=${{ secrets.DB_HOST }} \
+            --set secrets.DB_PORT=${{ secrets.DB_PORT }} \
+            --set secrets.DB_NAME=${{ secrets.DB_NAME }} \
+            --set secrets.DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            --set secrets.DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            --set secrets.REDIS_HOST=${{ secrets.REDIS_HOST }} \
+            --set secrets.REDIS_PORT=${{ secrets.REDIS_PORT }} \
+            --set secrets.JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            --set secrets.SMTP_HOST=${{ secrets.SMTP_HOST }} \
+            --set secrets.SMTP_PORT=${{ secrets.SMTP_PORT }} \
+            --set secrets.SMTP_USERNAME=${{ secrets.SMTP_USERNAME }} \
+            --set secrets.SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
 
       - name: Verify rollout
         run: kubectl rollout status deployment/hanbando-app
