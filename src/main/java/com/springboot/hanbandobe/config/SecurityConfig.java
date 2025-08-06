@@ -2,7 +2,6 @@ package com.springboot.hanbandobe.config;
 
 import com.springboot.hanbandobe.domain.auth.JwtAuthenticationFilter;
 import com.springboot.hanbandobe.domain.auth.JwtTokenProvider;
-import com.springboot.hanbandobe.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -67,8 +66,16 @@ public class SecurityConfig {
                                         }))
                 .authorizeHttpRequests(request ->
                         request
+                                // Swagger
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/api/user/login", "/api/user/join", "/api/email/send", "/api/email/verify").permitAll()
+                                // User
+                                .requestMatchers("/api/user/login", "/api/user/join").permitAll()
+                                // Email
+                                .requestMatchers("/api/email/send", "/api/email/verify").permitAll()
+                                // Board-category
+                                .requestMatchers(HttpMethod.GET, "/api/board-category/**").permitAll()
+                                // Board
+                                .requestMatchers(HttpMethod.GET, "/api/board/**").permitAll()
                                 .anyRequest().authenticated()); // 위 경로 외에 다른 요청은 인증필요
 
         return http.build();

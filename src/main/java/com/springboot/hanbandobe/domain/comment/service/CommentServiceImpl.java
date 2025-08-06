@@ -69,6 +69,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setContent(commentRequestDto.getContent());
     }
 
+    @Transactional
     @Override
     public void deleteComment(User user, Long boardNo, Long commentNo) {
         Comment comment = commentRepository.findById(commentNo)
@@ -78,6 +79,6 @@ public class CommentServiceImpl implements CommentService {
             throw new RuntimeException("댓글 작성자가 아닙니다.");
         }
 
-        commentRepository.deleteById(commentNo);
+        comment.setContent("작성자에 의해 삭제된 댓글입니다.");
     }
 }

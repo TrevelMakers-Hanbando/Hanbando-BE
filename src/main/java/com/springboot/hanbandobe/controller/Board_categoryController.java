@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,7 @@ public class Board_categoryController {
     }
 
     @PostMapping()
+    @SecurityRequirement(name = "bearer-auth")
     @Operation(summary = "게시판 카테고리 추가", description = "게시판 카테고리를 추가한다.")
     @ApiResponses({
             @ApiResponse(

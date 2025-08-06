@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,7 +35,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/comment")
 @Tag(name = "Comment", description = "댓글 관련 API")
 public class CommentController {
     private final CommentService commentService;
@@ -65,8 +64,8 @@ public class CommentController {
     })
     public ResponseEntity<List<CommentResponseDto>> getCommentsByBoardNo(
             @ParameterObject
-            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.DESC, sort = "boardNo") Pageable pageable
-            , @RequestParam(required = true) Long boardNo) {
+            @PageableDefault(page = 0, size = 10, direction = Sort.Direction.ASC, sort = "commentNo") Pageable pageable
+            , @PathVariable Long boardNo) {
 
         Page<CommentResponseDto> commentResponseDtos =  commentService.getCommentsByBoardNo(pageable, boardNo);
 
