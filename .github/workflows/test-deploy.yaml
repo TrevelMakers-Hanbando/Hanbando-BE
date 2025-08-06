@@ -55,8 +55,8 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > kubeconfig.yaml
-          export KUBECONFIG=$PWD/kubeconfig.yaml
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ~/.kube/config
 
       - name: Verify K8s Connection
         run: kubectl get nodes
