@@ -1,8 +1,11 @@
 package com.springboot.hanbandobe.controller;
 
+import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
 import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
+import com.springboot.hanbandobe.domain.schedule_detail.dto.PostPreferDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailPutTimeDto;
 import com.springboot.hanbandobe.domain.schedule_detail.dto.ScheduleDetailResponseDto;
+import com.springboot.hanbandobe.domain.schedule_detail.dto.testDto;
 import com.springboot.hanbandobe.domain.schedule_detail.service.ScheduleDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -33,10 +39,38 @@ public class ScheduleDetailController {
 
     @PostMapping
     @Operation(summary = "스케줄 생성", description = "새 스케줄을 추가합니다.")
-    public ResponseEntity<?> PostScheduleDetails() {
-        // prefer 정보를 flask에 넘겨서 받아와서 scheduleDetail에
-        // 저장
-        return null;
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = BoardResponseDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "NOT FOUND",
+                    content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "INTERNAL SERVER ERROR",
+                    content = @Content(mediaType = "application/json")
+            )
+    })
+    public ResponseEntity<List<PostPreferDto>> PostScheduleDetails(
+            @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam String startedAt,
+            @RequestParam String endedAt
+    ) {
+        Long userNo = principalDetails.getUser().getUserNo();
+        LocalDateTime startDate = LocalDate.parse(startedAt).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(endedAt).atTime(23, 59, 59);
+
+        List<PostPreferDto> dto = scheduleDetailService.PostScheduleDetails(userNo, startDate, endDate);
+
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
