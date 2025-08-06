@@ -1,96 +1,96 @@
-name: CI (Build, Push & Update State)
-
-on:
-  pull_request_target:
-    types: [closed]
-    branches: [ main ]
-
-env:
-  # Docker Hub 설정
-  REGISTRY_HOST: docker.io
-  REGISTRY_NAMESPACE: kimdoyun0806
-  IMAGE_NAME: foo
-
-jobs:
-  build-and-push:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{ github.sha }}
-    steps:
-
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 21
-
-      - name: Cache Gradle cache
-        uses: actions/cache@v3
-        with:
-          path: |
-              ~/.gradle/caches
-              ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle*','**/settings.gradle*') }}
-          restore-keys: |
-              ${{ runner.os }}-gradle-
-
-      - name: Build with Gradle
-        run: |
-            chmod +x gradlew
-            ./gradlew clean build -x test
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY_HOST }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-
-  update-image:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{ github.sha }}
-    steps:
-      - name: Check out Helm State repo
-        uses: actions/checkout@v4
-        with:
-          repository: TrevelMakers-Hanbando/Helm-State-Repository
-          token: ${{ secrets.GH_PAT }}
-          path: helm-state
-
-      - name: Configure Git
-        working-directory: helm-state
-        run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
-
-      - name: Update values.yaml image tag
-        working-directory: helm-state/foo/alpha
-        run: |
-          yq eval --inplace \
-            ".deployment.image = \"${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}\"" \
-            values.yaml
-
-      - name: Commit, tag & push
-        working-directory: helm-state
-        run: |
-          git add foo/alpha/values.yaml
-          git commit -m "ci: bump foo/alpha image to ${{ env.IMAGE_TAG }}"
-          git tag foo/alpha/${{ env.IMAGE_TAG }}
-          git push origin main --tags
+#name: CI (Build, Push & Update State)
+#
+#on:
+#  pull_request_target:
+#    types: [closed]
+#    branches: [ main ]
+#
+#env:
+#  # Docker Hub 설정
+#  REGISTRY_HOST: docker.io
+#  REGISTRY_NAMESPACE: kimdoyun0806
+#  IMAGE_NAME: foo
+#
+#jobs:
+#  build-and-push:
+#    if: github.event.pull_request.merged == true
+#    runs-on: ubuntu-latest
+#    env:
+#      IMAGE_TAG: ${{ github.sha }}
+#    steps:
+#
+#      - name: Check out code
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Set up JDK 21
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: temurin
+#          java-version: 21
+#
+#      - name: Cache Gradle cache
+#        uses: actions/cache@v3
+#        with:
+#          path: |
+#              ~/.gradle/caches
+#              ~/.gradle/wrapper
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle*','**/settings.gradle*') }}
+#          restore-keys: |
+#              ${{ runner.os }}-gradle-
+#
+#      - name: Build with Gradle
+#        run: |
+#            chmod +x gradlew
+#            ./gradlew clean build -x test
+#
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          registry: ${{ env.REGISTRY_HOST }}
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@v5
+#        with:
+#          context: .
+#          push: true
+#          tags: |
+#            ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
+#            ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+#
+#  update-image:
+#    needs: build-and-push
+#    runs-on: ubuntu-latest
+#    env:
+#      IMAGE_TAG: ${{ github.sha }}
+#    steps:
+#      - name: Check out Helm State repo
+#        uses: actions/checkout@v4
+#        with:
+#          repository: TrevelMakers-Hanbando/Helm-State-Repository
+#          token: ${{ secrets.GH_PAT }}
+#          path: helm-state
+#
+#      - name: Configure Git
+#        working-directory: helm-state
+#        run: |
+#          git config user.name "${{ github.actor }}"
+#          git config user.email "${{ github.actor }}@users.noreply.github.com"
+#
+#      - name: Update values.yaml image tag
+#        working-directory: helm-state/foo/alpha
+#        run: |
+#          yq eval --inplace \
+#            ".deployment.image = \"${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}\"" \
+#            values.yaml
+#
+#      - name: Commit, tag & push
+#        working-directory: helm-state
+#        run: |
+#          git add foo/alpha/values.yaml
+#          git commit -m "ci: bump foo/alpha image to ${{ env.IMAGE_TAG }}"
+#          git tag foo/alpha/${{ env.IMAGE_TAG }}
+#          git push origin main --tags

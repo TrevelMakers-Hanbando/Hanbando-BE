@@ -15,8 +15,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
+
+import static java.lang.Boolean.FALSE;
 
 
 @Entity
@@ -40,8 +43,15 @@ public class User_party extends BaseEntity{
     @JoinColumn(name = "party_no")
     private Party party;
 
+    @Builder.Default
+    @ColumnDefault("'FALSE'")
     @Column(name = "is_participated", nullable = false)
-    private Boolean isParticipated = false;
+    private Boolean isParticipated = FALSE;
+
+    @Builder.Default
+    @ColumnDefault("'FALSE'")
+    @Column(name = "is_host", nullable = false)
+    private Boolean isHost = FALSE;
 
     @Embeddable
     public static class UserPartyId implements Serializable {
