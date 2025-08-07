@@ -1,5 +1,6 @@
 package com.springboot.hanbandobe.domain.auth;
 
+import com.springboot.hanbandobe.domain.auth.service.AuthService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -58,7 +59,10 @@ public class JwtTokenProvider {
     public String createToken(String email, Collection<? extends GrantedAuthority> authorities, long tokenExp) {
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put("email", email);
+        PrincipalDetails principalDetails = (PrincipalDetails) userDetailsService.loadUserByUsername(email);
+
+        claims.put("email", principalDetails.getUser().getEmail());
+        claims.put("userName", principalDetails.getUser().getName());
         // 권한 정보
         claims.put("role", authorities.stream()
                 .map(GrantedAuthority::getAuthority)
