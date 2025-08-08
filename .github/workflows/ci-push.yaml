@@ -100,7 +100,7 @@ jobs:
             --dry-run=client -o yaml | kubectl apply -f -
 
   update-image:
-    needs: build-and-push
+    needs: ensure-k8s-secret
     runs-on: ubuntu-latest
     env:
       IMAGE_TAG: ${{ github.sha }}
