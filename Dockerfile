@@ -6,7 +6,7 @@
 #WORKDIR /app
 #EXPOSE 8000
 #CMD ["java", "-jar", "app.jar"]
-#
+
 FROM eclipse-temurin:21-jre-alpine
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
