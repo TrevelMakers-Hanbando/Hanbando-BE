@@ -10,6 +10,8 @@ env:
   REGISTRY_HOST: docker.io
   REGISTRY_NAMESPACE: kimdoyun0806
   IMAGE_NAME: foo
+  K8S_NAMESPACE: backend-dev
+  K8S_SECRET_NAME: foo-credentials
 
 jobs:
   build-and-push:
@@ -60,6 +62,42 @@ jobs:
           tags: |
             ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+  ensure-k8s-secret:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with: { version: 'latest' }
+
+      - name: Configure kubeconfig
+        shell: bash
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config || echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      - name: Ensure namespace exists
+        run: |
+          kubectl get ns ${{ env.K8S_NAMESPACE }} >/dev/null 2>&1 || \
+          kubectl create namespace ${{ env.K8S_NAMESPACE }}
+
+      - name: Create/Update K8s Secret
+        shell: bash
+        run: |
+          kubectl -n ${{ env.K8S_NAMESPACE }} create secret generic ${{ env.K8S_SECRET_NAME }} \
+            --from-literal=DB_HOST="${{ secrets.DB_HOST }}" \
+            --from-literal=DB_PORT="${{ secrets.DB_PORT }}" \
+            --from-literal=DB_NAME="${{ secrets.DB_NAME }}" \
+            --from-literal=DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            --from-literal=DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            --from-literal=REDIS_HOST="${{ secrets.REDIS_HOST }}" \
+            --from-literal=REDIS_PORT="${{ secrets.REDIS_PORT }}" \
+            --from-literal=JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            --from-literal=SMTP_HOST="${{ secrets.SMTP_HOST }}" \
+            --from-literal=SMTP_PORT="${{ secrets.SMTP_PORT }}" \
+            --from-literal=SMTP_USERNAME="${{ secrets.SMTP_USERNAME }}" \
+            --from-literal=SMTP_PASSWORD="${{ secrets.SMTP_PASSWORD }}" \
+            --dry-run=client -o yaml | kubectl apply -f -
 
   update-image:
     needs: build-and-push
