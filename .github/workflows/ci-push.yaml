@@ -62,7 +62,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY_HOST }}/${{ env.REGISTRY_NAMESPACE }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-
+#
   ensure-k8s-secret:
     needs: build-and-push
     runs-on: ubuntu-latest
