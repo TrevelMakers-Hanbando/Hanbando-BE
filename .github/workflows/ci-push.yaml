@@ -74,6 +74,8 @@ jobs:
       - name: Configure kubeconfig
         shell: bash
         run: |
+          set -e
+          mkdir -p "$HOME/.kube"
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config || echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
 
       - name: Ensure namespace exists
