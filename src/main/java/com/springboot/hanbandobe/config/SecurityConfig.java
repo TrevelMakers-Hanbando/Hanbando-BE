@@ -76,6 +76,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/board-category/**").permitAll()
                                 // Board
                                 .requestMatchers(HttpMethod.GET, "/api/board/**").permitAll()
+                                // health
+                                .requestMatchers("/actuator/health", "/actuator/health/**", "/actuator/info").permitAll()
                                 .anyRequest().authenticated()); // 위 경로 외에 다른 요청은 인증필요
 
         return http.build();
