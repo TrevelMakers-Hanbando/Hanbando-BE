@@ -10,7 +10,7 @@ import java.util.List;
 public interface AlarmService {
     AlarmResponseDto createAlarm(Long userNo, @Valid AlarmRequestDto alarmRequestDto);
 
-    AlarmResponseDto getAlarm(Long userNo, Long AlarmNo);
+    AlarmResponseDto putAlarm(Long userNo, Long AlarmNo);
 
     List<AlarmResponseDto> getAlarms(Long userNo, int page, int size);
 

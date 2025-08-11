@@ -6,7 +6,7 @@ import com.springboot.hanbandobe.domain.alarm.service.AlarmService;
 import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -85,12 +85,12 @@ public class AlarmController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<AlarmResponseDto> getAlarm(
+    public ResponseEntity<AlarmResponseDto> putAlarm(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            Long alarmNo
+            @RequestParam Long alarmNo
     ) {
         Long userNo = principalDetails.getUser().getUserNo();
-        AlarmResponseDto dto = alarmService.getAlarm(userNo, alarmNo);
+        AlarmResponseDto dto = alarmService.putAlarm(userNo, alarmNo);
 
         return ResponseEntity.ok(dto);
     }
@@ -151,7 +151,7 @@ public class AlarmController {
     })
     public ResponseEntity<String> deleteAlarm(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
-            Long alarmNo
+            @RequestParam Long alarmNo
     ) {
         Long userNo = principalDetails.getUser().getUserNo();
         return ResponseEntity.ok(alarmService.deleteAlarm(userNo, alarmNo));
