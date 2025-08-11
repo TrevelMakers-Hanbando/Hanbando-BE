@@ -36,12 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String uri = request.getRequestURI();
-        if (uri.startsWith("/actuator/")) { // 헬스체크/메트릭 등은 토큰 검사 없이 통과
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String token = jwtTokenProvider.resolveToken(request.getHeader("Authorization"));
 
         // Swagger UI 경로는 인증 필터를 통과시킴
