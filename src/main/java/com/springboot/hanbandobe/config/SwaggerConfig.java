@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Spring API",
                 description = "여행 일정 추천 및 관리 플랫폼",
-                version = "1.0.1"
+                version = "1.0.5"
         )
 )
 public class SwaggerConfig {
