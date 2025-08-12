@@ -1,7 +1,6 @@
 package com.springboot.hanbandobe.controller;
 
 import com.springboot.hanbandobe.domain.auth.PrincipalDetails;
-import com.springboot.hanbandobe.domain.board.dto.BoardResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleDetailResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleListResponseDto;
 import com.springboot.hanbandobe.domain.schedule.dto.ScheduleRequestDto;
@@ -9,7 +8,6 @@ import com.springboot.hanbandobe.domain.schedule.dto.ScheduleResponseDto;
 import com.springboot.hanbandobe.domain.schedule.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,8 +41,7 @@ public class ScheduleController {
                     responseCode = "200",
                     description = "OK",
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
+                            mediaType = "application/json"
                     )
             ),
             @ApiResponse(
@@ -75,8 +72,7 @@ public class ScheduleController {
                     responseCode = "200",
                     description = "OK",
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
+                            mediaType = "application/json"
                     )
             ),
             @ApiResponse(
@@ -105,8 +101,7 @@ public class ScheduleController {
                     responseCode = "200",
                     description = "OK",
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
+                            mediaType = "application/json"
                     )
             ),
             @ApiResponse(
@@ -134,8 +129,7 @@ public class ScheduleController {
                     responseCode = "200",
                     description = "OK",
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
+                            mediaType = "application/json"
                     )
             ),
             @ApiResponse(
@@ -164,8 +158,7 @@ public class ScheduleController {
                     responseCode = "200",
                     description = "OK",
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
+                            mediaType = "application/json"
                     )
             ),
             @ApiResponse(
@@ -194,8 +187,7 @@ public class ScheduleController {
                     responseCode = "200",
                     description = "OK",
                     content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = BoardResponseDto.class)
+                            mediaType = "application/json"
                     )
             ),
             @ApiResponse(
