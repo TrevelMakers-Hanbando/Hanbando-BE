@@ -91,7 +91,7 @@ public class SecurityConfig {
             // CorsConfiguration 객체 생성
             CorsConfiguration configuration = new CorsConfiguration();
 
-            // CORS 요청에서 허용할 출처를 설정
+            // CORS 요청에서 허용할 출처를 설정 #
             configuration.setAllowedOrigins(Arrays.asList("https://www.travel-hanbando.com", "http://localhost:8080", "http://localhost:3000"));
 
             // CORS 요청에서 허용할 HTTP 메소드 지정
