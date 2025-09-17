@@ -17,3 +17,4 @@ public class Role {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 }
+//
