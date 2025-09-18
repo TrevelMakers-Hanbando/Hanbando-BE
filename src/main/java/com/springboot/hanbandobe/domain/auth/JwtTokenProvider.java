@@ -202,7 +202,7 @@ public class JwtTokenProvider {
     }
 
     public boolean isBlackListed(String token) {
-        String key = "BlackList: " + parseClaims(token).getId();
+        String key = "BlackList : " + parseClaims(token).getId();
         return redisTemplate.hasKey(key);
     }
 
