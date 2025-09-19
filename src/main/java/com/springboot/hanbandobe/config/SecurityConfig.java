@@ -28,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-
+//
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
